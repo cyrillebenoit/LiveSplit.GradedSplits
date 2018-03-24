@@ -92,6 +92,8 @@ namespace LiveSplit.UI.Components
         public GradedIcon BehindGainingTimeIcon { get; set; }
         public GradedIcon BehindLosingTimeIcon { get; set; }
 
+        public GradedIconsApplicationState GradedIconsApplicationState { get; set; }
+
         public class GradedIcon
         {
             public string Location { get; set; }
@@ -185,6 +187,7 @@ namespace LiveSplit.UI.Components
             this.AheadLosingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Location = null };
             this.BehindGainingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Location = null };
             this.BehindLosingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Location = null };
+            this.GradedIconsApplicationState = GradedIconsApplicationState.Disabled;
         }
 
         void chkColumnLabels_CheckedChanged(object sender, EventArgs e)
@@ -434,8 +437,32 @@ namespace LiveSplit.UI.Components
             }
 
             var gradedIconsElem = element["GradedIcons"];
+
             foreach (XmlNode child in gradedIconsElem.ChildNodes)
             {
+                if (child.Name == "ApplicationState")
+                {
+                    var appstate = SettingsHelper.ParseEnum<GradedIconsApplicationState>((XmlElement)child, GradedIconsApplicationState.Disabled);
+                    this.GradedIconsApplicationState = appstate;
+                    if (appstate == GradedIconsApplicationState.Disabled)
+                    {
+                        this.IconApplicationState_Radio_Disabled.Checked = true;
+                    }
+                    else if (appstate == GradedIconsApplicationState.CurrentRun)
+                    {
+                        this.IconApplicationState_Radio_CurrentRun.Checked = true;
+                    }
+                    else if (appstate == GradedIconsApplicationState.Comparison)
+                    {
+                        this.IconApplicationState_Radio_Comparison.Checked = true;
+                    }
+                    else if (appstate == GradedIconsApplicationState.ComparisonAndCurrentRun)
+                    {
+                        this.IconApplicationState_Radio_CurrentRunAndComparison.Checked = true;
+                    }
+                    continue;
+                }
+
                 var percentage = 0;
                 var iconUrl = "";
                 GradedIconState state = GradedIconState.Disabled;
@@ -621,6 +648,21 @@ namespace LiveSplit.UI.Components
             {
                 gradedIconsElement = document.CreateElement("GradedIcons");
                 parent.AppendChild(gradedIconsElement);
+
+                GradedIconsApplicationState applicationState = 
+                    (this.IconApplicationState_Radio_Disabled.Checked ? GradedIconsApplicationState.Disabled :
+                        (this.IconApplicationState_Radio_CurrentRun.Checked ? GradedIconsApplicationState.CurrentRun :
+                            (this.IconApplicationState_Radio_Comparison.Checked ? GradedIconsApplicationState.Comparison :
+                                (this.IconApplicationState_Radio_CurrentRunAndComparison.Checked ? GradedIconsApplicationState.ComparisonAndCurrentRun :
+                                    GradedIconsApplicationState.Disabled
+                                )
+                            )
+                        )
+                    );
+
+                var elem = document.CreateElement("ApplicationState");
+                hashCode ^= SettingsHelper.CreateSetting(document, elem, "ApplicationState", applicationState.ToString());
+                gradedIconsElement.AppendChild(elem);
 
                 var bestSegElem = document.CreateElement("BestSegment");
                 GradedIconState state = (this.Radio_BestSeg_Disable.Checked ? GradedIconState.Disabled :
@@ -841,7 +883,179 @@ namespace LiveSplit.UI.Components
 
         private void Radio_BestSeg_UsePercent_CheckedChanged(object sender, EventArgs e)
         {
+            if (((RadioButton)sender).Checked)
+            {
+                this.BestSegmentIcon.IconState = GradedIconState.PercentageSplit;
+            }
+        }
 
+        private void IconApplicationState_Radio_Disabled_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.GradedIconsApplicationState = GradedIconsApplicationState.Disabled;
+            }
+        }
+
+        private void IconApplicationState_Radio_CurrentRun_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.GradedIconsApplicationState = GradedIconsApplicationState.CurrentRun;
+            }
+        }
+
+        private void IconApplicationState_Radio_Comparison_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.GradedIconsApplicationState = GradedIconsApplicationState.Comparison;
+            }
+        }
+
+        private void IconApplicationState_Radio_CurrentRunAndComparison_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.GradedIconsApplicationState = GradedIconsApplicationState.ComparisonAndCurrentRun;
+            }
+        }
+
+        private void Radio_BestSeg_Disable_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.BestSegmentIcon.IconState = GradedIconState.Disabled;
+            }
+        }
+
+        private void Radio_BestSeg_UseDefault_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.BestSegmentIcon.IconState = GradedIconState.Default;
+            }
+        }
+
+        private void BestSeg_Percent_ValueChanged(object sender, EventArgs e)
+        {
+            this.BestSegmentIcon.PercentageBehind = Convert.ToInt32(((NumericUpDown)sender).Value);
+        }
+
+        private void Radio_AheadGaining_Disable_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.AheadGainingTimeIcon.IconState = GradedIconState.Disabled;
+            }
+        }
+
+        private void Radio_AheadGaining_UseDefault_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.AheadGainingTimeIcon.IconState = GradedIconState.Default;
+            }
+        }
+
+        private void Radio_AheadGaining_UsePercent_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.AheadGainingTimeIcon.IconState = GradedIconState.PercentageSplit;
+            }
+        }
+
+        private void AheadGaining_Percent_ValueChanged(object sender, EventArgs e)
+        {
+            this.AheadGainingTimeIcon.PercentageBehind = Convert.ToInt32(((NumericUpDown)sender).Value);
+        }
+
+        private void Radio_AheadLosing_Disable_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.AheadLosingTimeIcon.IconState = GradedIconState.Disabled;
+            }
+        }
+
+        private void Radio_AheadLosing_UseDefault_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.AheadLosingTimeIcon.IconState = GradedIconState.Default;
+            }
+        }
+
+        private void Radio_AheadLosing_UsePercent_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.AheadLosingTimeIcon.IconState = GradedIconState.PercentageSplit;
+            }
+        }
+
+        private void AheadLosing_Percent_ValueChanged(object sender, EventArgs e)
+        {
+            this.AheadLosingTimeIcon.PercentageBehind = Convert.ToInt32(((NumericUpDown)sender).Value);
+        }
+
+        private void Radio_BehindGaining_Disable_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.BehindGainingTimeIcon.IconState = GradedIconState.Disabled;
+            }
+        }
+
+        private void Radio_BehindGaining_UseDefault_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.BehindGainingTimeIcon.IconState = GradedIconState.Default;
+            }
+        }
+
+        private void Radio_BehindGaining_UsePercent_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.BehindGainingTimeIcon.IconState = GradedIconState.PercentageSplit;
+            }
+        }
+
+        private void BehindGaining_Percent_ValueChanged(object sender, EventArgs e)
+        {
+            this.BehindGainingTimeIcon.PercentageBehind = Convert.ToInt32(((NumericUpDown)sender).Value);
+        }
+
+        private void Radio_BehindLosing_Disable_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.BehindLosingTimeIcon.IconState = GradedIconState.Disabled;
+            }
+        }
+
+        private void Radio_BehindLosing_UseDefault_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.BehindLosingTimeIcon.IconState = GradedIconState.Default;
+            }
+        }
+
+        private void Radio_BehindLosing_UsePercent_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.BehindLosingTimeIcon.IconState = GradedIconState.PercentageSplit;
+            }
+        }
+
+        private void BehindLosing_Percent_ValueChanged(object sender, EventArgs e)
+        {
+            this.BehindLosingTimeIcon.PercentageBehind = Convert.ToInt32(((NumericUpDown)sender).Value);
         }
     }
 }

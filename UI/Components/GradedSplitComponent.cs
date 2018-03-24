@@ -83,7 +83,6 @@ namespace LiveSplit.UI.Components
             LabelsList = new List<SimpleLabel>();
         }
 
-        bool shown = false;
         private void DrawGeneral(Graphics g, LiveSplitState state, float width, float height, LayoutMode mode)
         {
             if (NeedUpdateAll)
@@ -171,226 +170,7 @@ namespace LiveSplit.UI.Components
                     g.FillRectangle(currentSplitBrush, 0, 0, width, height);
                 }
 
-                var icon = Split.Icon;
-
-                if (this.Settings.DisplayIcons)
-                {
-                    // If this split has already gone past:
-                    if (state.CurrentSplitIndex > splitIndex)
-                    {
-                        var splitState = SplitState.Unknown;
-
-                        var getCurrentSplitPercentageBehindBestSegment = new Func<int>(() =>
-                        {
-                            // say your best segment is 100s
-                            // it makes sense to do like < 105 = A
-                            // < 110 = B
-                            // 0.05 = (105-100)/100
-                            double bestMilliseconds = 0;
-                            if (state.CurrentTimingMethod == TimingMethod.GameTime)
-                            {
-                                bestMilliseconds = Split.BestSegmentTime.GameTime?.TotalMilliseconds ?? 0;
-                            }
-                            else if (state.CurrentTimingMethod == TimingMethod.RealTime)
-                            {
-                                bestMilliseconds = Split.BestSegmentTime.RealTime?.TotalMilliseconds ?? 0;
-                            }
-
-                            // No current best segment, gold split guaranteed A+?
-                            if (bestMilliseconds <= 0)
-                            {
-                                return 0;
-                            }
-
-                            double currentMilliseconds = 0;
-                            var priorTime = LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, state.CurrentTimingMethod);
-                            if (priorTime != null)
-                            {
-                                currentMilliseconds = priorTime.Value.TotalMilliseconds;
-                            }
-
-                            // you were super amazing or i messed up:
-                            if (currentMilliseconds <= 0)
-                            {
-                                return -1;
-                            }
-
-                            return Convert.ToInt32((((currentMilliseconds - bestMilliseconds) / bestMilliseconds) * ((double)100)));
-                        });
-
-                        if ((this.Settings.BehindLosingTimeIcon.Location != null &&
-                            this.Settings.BehindLosingTimeIcon.IconState == GradedIconState.Default) ||
-                            (this.Settings.BehindGainingTimeIcon.Location != null &&
-                            this.Settings.BehindGainingTimeIcon.IconState == GradedIconState.Default) ||
-                            (this.Settings.AheadLosingTimeIcon.Location != null &&
-                            this.Settings.AheadLosingTimeIcon.IconState == GradedIconState.Default) ||
-                            (this.Settings.AheadGainingTimeIcon.Location != null &&
-                            this.Settings.AheadGainingTimeIcon.IconState == GradedIconState.Default) ||
-                            (this.Settings.BestSegmentIcon.Location != null &&
-                            this.Settings.BestSegmentIcon.IconState == GradedIconState.Default))
-                        {
-                            var segmentDelta = LiveSplitStateHelper.GetPreviousSegmentDelta(state, splitIndex, state.CurrentComparison, state.CurrentTimingMethod);
-                            splitState = this.GetSplitState(state, segmentDelta, splitIndex, state.CurrentComparison, state.CurrentTimingMethod);
-                        }
-
-                        var iconToUse = SplitState.Unknown;
-
-                        if (this.Settings.BehindLosingTimeIcon.Location != null &&
-                            this.Settings.BehindLosingTimeIcon.IconState != GradedIconState.Disabled)
-                        {
-                            if (this.Settings.BehindLosingTimeIcon.IconState == GradedIconState.Default && splitState == SplitState.BehindLosing)
-                            {
-                                iconToUse = splitState;
-                            }
-                            else if (this.Settings.BehindLosingTimeIcon.IconState == GradedIconState.PercentageSplit)
-                            {
-                                var percentage = getCurrentSplitPercentageBehindBestSegment();
-                                if (percentage < this.Settings.BehindLosingTimeIcon.PercentageBehind)
-                                {
-                                    iconToUse = SplitState.BehindLosing;
-                                }
-                            }
-                        }
-
-                        if (this.Settings.BehindGainingTimeIcon.Location != null &&
-                            this.Settings.BehindGainingTimeIcon.IconState != GradedIconState.Disabled)
-                        {
-                            if (this.Settings.BehindGainingTimeIcon.IconState == GradedIconState.Default && splitState == SplitState.BehindGaining)
-                            {
-                                iconToUse = splitState;
-                            }
-                            else if (this.Settings.BehindGainingTimeIcon.IconState == GradedIconState.PercentageSplit)
-                            {
-                                var percentage = getCurrentSplitPercentageBehindBestSegment();
-                                if (percentage < this.Settings.BehindGainingTimeIcon.PercentageBehind)
-                                {
-                                    iconToUse = SplitState.BehindGaining;
-                                }
-                            }
-                        }
-
-                        if (this.Settings.AheadLosingTimeIcon.Location != null &&
-                            this.Settings.AheadLosingTimeIcon.IconState != GradedIconState.Disabled)
-                        {
-                            if (this.Settings.AheadLosingTimeIcon.IconState == GradedIconState.Default && splitState == SplitState.AheadLosing)
-                            {
-                                iconToUse = splitState;
-                            }
-                            else if (this.Settings.AheadLosingTimeIcon.IconState == GradedIconState.PercentageSplit)
-                            {
-                                var percentage = getCurrentSplitPercentageBehindBestSegment();
-                                if (percentage < this.Settings.AheadLosingTimeIcon.PercentageBehind)
-                                {
-                                    iconToUse = SplitState.AheadLosing;
-                                }
-                            }
-                        }
-
-                        if (this.Settings.AheadGainingTimeIcon.Location != null &&
-                            this.Settings.AheadGainingTimeIcon.IconState != GradedIconState.Disabled)
-                        {
-                            if (this.Settings.AheadGainingTimeIcon.IconState == GradedIconState.Default && splitState == SplitState.AheadGaining)
-                            {
-                                iconToUse = splitState;
-                            }
-                            else if (this.Settings.AheadGainingTimeIcon.IconState == GradedIconState.PercentageSplit)
-                            {
-                                var percentage = getCurrentSplitPercentageBehindBestSegment();
-                                if (percentage < this.Settings.AheadGainingTimeIcon.PercentageBehind)
-                                {
-                                    iconToUse = SplitState.AheadGaining;
-                                }
-                            }
-                        }
-
-                        if (this.Settings.BestSegmentIcon.Location != null &&
-                            this.Settings.BestSegmentIcon.IconState != GradedIconState.Disabled)
-                        {
-                            if (this.Settings.BestSegmentIcon.IconState == GradedIconState.Default && splitState == SplitState.BestSegment)
-                            {
-                                iconToUse = splitState;
-                            }
-                            else if (this.Settings.BestSegmentIcon.IconState == GradedIconState.PercentageSplit)
-                            {
-                                var percentage = getCurrentSplitPercentageBehindBestSegment();
-
-                                if (percentage < this.Settings.BestSegmentIcon.PercentageBehind)
-                                {
-                                    iconToUse = SplitState.BestSegment;
-                                }
-                            }
-                        }
-
-                        if (iconToUse == SplitState.BestSegment)
-                        {
-                            Image cached;
-                            if (!GradedIcons.TryGetValue(this.Settings.BestSegmentIcon.Location, out cached))
-                            {
-                                icon = new Bitmap(this.Settings.BestSegmentIcon.Location);
-                                GradedIcons.Add(this.Settings.BestSegmentIcon.Location, icon);
-                            }
-                            else
-                            {
-                                icon = cached;
-                            }
-                        }
-                        else if (iconToUse == SplitState.AheadGaining)
-                        {
-                            Image cached;
-                            if (!GradedIcons.TryGetValue(this.Settings.AheadGainingTimeIcon.Location, out cached))
-                            {
-                                icon = new Bitmap(this.Settings.AheadGainingTimeIcon.Location);
-                                GradedIcons.Add(this.Settings.AheadGainingTimeIcon.Location, icon);
-                            }
-                            else
-                            {
-                                icon = cached;
-                            }
-                        }
-                        else if (iconToUse == SplitState.AheadLosing)
-                        {
-                            Image cached;
-                            if (!GradedIcons.TryGetValue(this.Settings.AheadLosingTimeIcon.Location, out cached))
-                            {
-                                icon = new Bitmap(this.Settings.AheadLosingTimeIcon.Location);
-                                GradedIcons.Add(this.Settings.AheadLosingTimeIcon.Location, icon);
-                            }
-                            else
-                            {
-                                icon = cached;
-                            }
-                        }
-                        else if (iconToUse == SplitState.BehindGaining)
-                        {
-                            Image cached;
-                            if (!GradedIcons.TryGetValue(this.Settings.BehindGainingTimeIcon.Location, out cached))
-                            {
-                                icon = new Bitmap(this.Settings.BehindGainingTimeIcon.Location);
-                                GradedIcons.Add(this.Settings.BehindGainingTimeIcon.Location, icon);
-                            }
-                            else
-                            {
-                                icon = cached;
-                            }
-                        }
-                        else if (iconToUse == SplitState.BehindLosing)
-                        {
-                            Image cached;
-                            if (!GradedIcons.TryGetValue(this.Settings.BehindLosingTimeIcon.Location, out cached))
-                            {
-                                icon = new Bitmap(this.Settings.BehindLosingTimeIcon.Location);
-                                GradedIcons.Add(this.Settings.BehindLosingTimeIcon.Location, icon);
-                            }
-                            else
-                            {
-                                icon = cached;
-                            }
-                        }
-
-                    }
-                }
-
-
+                var icon = GetIcon(state, splitIndex);
 
                 if (DisplayIcon && icon != null)
                 {
@@ -479,6 +259,273 @@ namespace LiveSplit.UI.Components
             }
             else DisplayIcon = Settings.DisplayIcons;
         }
+
+        private Image GetIcon(LiveSplitState state, int splitIndex)
+        {
+            var icon = Split.Icon;
+
+            if (this.Settings.DisplayIcons)
+            {
+                var attemptIconOverride = false;
+                var currentSegmantHasBeenSplit = (state.CurrentSplitIndex > splitIndex);
+                if (this.Settings.GradedIconsApplicationState == GradedIconsApplicationState.ComparisonAndCurrentRun ||
+                    this.Settings.GradedIconsApplicationState == GradedIconsApplicationState.Comparison)
+                {
+                    attemptIconOverride = true;
+                }
+                else if (this.Settings.GradedIconsApplicationState == GradedIconsApplicationState.CurrentRun && currentSegmantHasBeenSplit)
+                {
+                    attemptIconOverride = true;
+                }
+
+                // If this split has already gone past:
+                if (attemptIconOverride)
+                {
+                    var splitState = SplitState.Unknown;
+
+                    var getCurrentSplitPercentageBehindBestSegment = new Func<int>(() =>
+                    {
+                        // say your best segment is 100s
+                        // it makes sense to do like < 105 = A
+                        // < 110 = B
+                        // 0.05 = (105-100)/100
+                        double bestMilliseconds = 0;
+                        if (state.CurrentTimingMethod == TimingMethod.GameTime)
+                        {
+                            bestMilliseconds = Split.BestSegmentTime.GameTime?.TotalMilliseconds ?? 0;
+                        }
+                        else if (state.CurrentTimingMethod == TimingMethod.RealTime)
+                        {
+                            bestMilliseconds = Split.BestSegmentTime.RealTime?.TotalMilliseconds ?? 0;
+                        }
+
+                        // No current best segment, gold split guaranteed A+?
+                        if (bestMilliseconds <= 0)
+                        {
+                            return 0;
+                        }
+
+                        double currentMilliseconds = 0;
+                        if (currentSegmantHasBeenSplit)
+                        {
+                            var priorTime = LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, state.CurrentTimingMethod);
+                            if (priorTime != null)
+                            {
+                                currentMilliseconds = priorTime.Value.TotalMilliseconds;
+                            }
+                        }
+                        else
+                        {
+                            double personalBestTimeMilliseconds = 0;
+                            double priorsplitMilliseconds = 0;
+                            if (state.CurrentTimingMethod == TimingMethod.GameTime)
+                            {
+                                personalBestTimeMilliseconds = Split.PersonalBestSplitTime.GameTime?.TotalMilliseconds ?? 0;
+                                if (splitIndex > 0) // At index 0, there is no prior split, and the PB split IS the total ms for it
+                                {
+                                    priorsplitMilliseconds = state.Run[splitIndex - 1].PersonalBestSplitTime.GameTime?.TotalMilliseconds ?? 0;
+                                }
+                            }
+                            else if (state.CurrentTimingMethod == TimingMethod.RealTime)
+                            {
+                                personalBestTimeMilliseconds = Split.PersonalBestSplitTime.RealTime?.TotalMilliseconds ?? 0;
+                                if (splitIndex > 0) // At index 0, there is no prior split, and the PB split IS the total ms for it
+                                {
+                                    priorsplitMilliseconds = state.Run[splitIndex - 1].PersonalBestSplitTime.RealTime?.TotalMilliseconds ?? 0;
+                                }
+                            }
+
+                            currentMilliseconds = (personalBestTimeMilliseconds - priorsplitMilliseconds);
+                        }
+
+                        // you were super amazing or i messed up:
+                        if (currentMilliseconds <= 0)
+                        {
+                            return -1;
+                        }
+
+                        return Convert.ToInt32((((currentMilliseconds - bestMilliseconds) / bestMilliseconds) * ((double)100)));
+                    });
+
+                    if ((this.Settings.BehindLosingTimeIcon.Location != null &&
+                        this.Settings.BehindLosingTimeIcon.IconState == GradedIconState.Default) ||
+                        (this.Settings.BehindGainingTimeIcon.Location != null &&
+                        this.Settings.BehindGainingTimeIcon.IconState == GradedIconState.Default) ||
+                        (this.Settings.AheadLosingTimeIcon.Location != null &&
+                        this.Settings.AheadLosingTimeIcon.IconState == GradedIconState.Default) ||
+                        (this.Settings.AheadGainingTimeIcon.Location != null &&
+                        this.Settings.AheadGainingTimeIcon.IconState == GradedIconState.Default) ||
+                        (this.Settings.BestSegmentIcon.Location != null &&
+                        this.Settings.BestSegmentIcon.IconState == GradedIconState.Default))
+                    {
+                        var segmentDelta = LiveSplitStateHelper.GetPreviousSegmentDelta(state, splitIndex, state.CurrentComparison, state.CurrentTimingMethod);
+                        splitState = this.GetSplitState(state, segmentDelta, splitIndex, state.CurrentComparison, state.CurrentTimingMethod);
+                    }
+
+                    var iconToUse = SplitState.Unknown;
+
+                    if (this.Settings.BehindLosingTimeIcon.Location != null &&
+                        this.Settings.BehindLosingTimeIcon.IconState != GradedIconState.Disabled)
+                    {
+                        if (this.Settings.BehindLosingTimeIcon.IconState == GradedIconState.Default && splitState == SplitState.BehindLosing)
+                        {
+                            iconToUse = splitState;
+                        }
+                        else if (this.Settings.BehindLosingTimeIcon.IconState == GradedIconState.PercentageSplit)
+                        {
+                            var percentage = getCurrentSplitPercentageBehindBestSegment();
+                            if (percentage < this.Settings.BehindLosingTimeIcon.PercentageBehind)
+                            {
+                                iconToUse = SplitState.BehindLosing;
+                            }
+                        }
+                    }
+
+                    if (this.Settings.BehindGainingTimeIcon.Location != null &&
+                        this.Settings.BehindGainingTimeIcon.IconState != GradedIconState.Disabled)
+                    {
+                        if (this.Settings.BehindGainingTimeIcon.IconState == GradedIconState.Default && splitState == SplitState.BehindGaining)
+                        {
+                            iconToUse = splitState;
+                        }
+                        else if (this.Settings.BehindGainingTimeIcon.IconState == GradedIconState.PercentageSplit)
+                        {
+                            var percentage = getCurrentSplitPercentageBehindBestSegment();
+                            if (percentage < this.Settings.BehindGainingTimeIcon.PercentageBehind)
+                            {
+                                iconToUse = SplitState.BehindGaining;
+                            }
+                        }
+                    }
+
+                    if (this.Settings.AheadLosingTimeIcon.Location != null &&
+                        this.Settings.AheadLosingTimeIcon.IconState != GradedIconState.Disabled)
+                    {
+                        if (this.Settings.AheadLosingTimeIcon.IconState == GradedIconState.Default && splitState == SplitState.AheadLosing)
+                        {
+                            iconToUse = splitState;
+                        }
+                        else if (this.Settings.AheadLosingTimeIcon.IconState == GradedIconState.PercentageSplit)
+                        {
+                            var percentage = getCurrentSplitPercentageBehindBestSegment();
+                            if (percentage < this.Settings.AheadLosingTimeIcon.PercentageBehind)
+                            {
+                                iconToUse = SplitState.AheadLosing;
+                            }
+                        }
+                    }
+
+                    if (this.Settings.AheadGainingTimeIcon.Location != null &&
+                        this.Settings.AheadGainingTimeIcon.IconState != GradedIconState.Disabled)
+                    {
+                        if (this.Settings.AheadGainingTimeIcon.IconState == GradedIconState.Default && splitState == SplitState.AheadGaining)
+                        {
+                            iconToUse = splitState;
+                        }
+                        else if (this.Settings.AheadGainingTimeIcon.IconState == GradedIconState.PercentageSplit)
+                        {
+                            var percentage = getCurrentSplitPercentageBehindBestSegment();
+                            if (percentage < this.Settings.AheadGainingTimeIcon.PercentageBehind)
+                            {
+                                iconToUse = SplitState.AheadGaining;
+                            }
+                        }
+                    }
+
+                    if (this.Settings.BestSegmentIcon.Location != null &&
+                        this.Settings.BestSegmentIcon.IconState != GradedIconState.Disabled)
+                    {
+                        if (this.Settings.BestSegmentIcon.IconState == GradedIconState.Default && splitState == SplitState.BestSegment)
+                        {
+                            iconToUse = splitState;
+                        }
+                        else if (this.Settings.BestSegmentIcon.IconState == GradedIconState.PercentageSplit)
+                        {
+                            var percentage = getCurrentSplitPercentageBehindBestSegment();
+
+                            if (percentage < this.Settings.BestSegmentIcon.PercentageBehind)
+                            {
+                                iconToUse = SplitState.BestSegment;
+                            }
+                        }
+                    }
+
+                    if (iconToUse == SplitState.BestSegment)
+                    {
+                        Image cached;
+                        if (!GradedIcons.TryGetValue(this.Settings.BestSegmentIcon.Location + "_1", out cached))
+                        {
+                            icon = new Bitmap(this.Settings.BestSegmentIcon.Location);
+                            GradedIcons.Add(this.Settings.BestSegmentIcon.Location + "_1", icon);
+                        }
+                        else
+                        {
+                            icon = cached;
+                        }
+                    }
+                    else if (iconToUse == SplitState.AheadGaining)
+                    {
+                        Image cached;
+                        if (!GradedIcons.TryGetValue(this.Settings.AheadGainingTimeIcon.Location + "_2", out cached))
+                        {
+                            icon = new Bitmap(this.Settings.AheadGainingTimeIcon.Location);
+                            GradedIcons.Add(this.Settings.AheadGainingTimeIcon.Location + "_2", icon);
+                        }
+                        else
+                        {
+                            icon = cached;
+                        }
+                    }
+                    else if (iconToUse == SplitState.AheadLosing)
+                    {
+                        Image cached;
+                        if (!GradedIcons.TryGetValue(this.Settings.AheadLosingTimeIcon.Location + "_3", out cached))
+                        {
+                            icon = new Bitmap(this.Settings.AheadLosingTimeIcon.Location);
+                            GradedIcons.Add(this.Settings.AheadLosingTimeIcon.Location + "_3", icon);
+                        }
+                        else
+                        {
+                            icon = cached;
+                        }
+                    }
+                    else if (iconToUse == SplitState.BehindGaining)
+                    {
+                        Image cached;
+                        if (!GradedIcons.TryGetValue(this.Settings.BehindGainingTimeIcon.Location + "_4", out cached))
+                        {
+                            icon = new Bitmap(this.Settings.BehindGainingTimeIcon.Location);
+                            GradedIcons.Add(this.Settings.BehindGainingTimeIcon.Location + "_4", icon);
+                        }
+                        else
+                        {
+                            icon = cached;
+                        }
+                    }
+                    else if (iconToUse == SplitState.BehindLosing)
+                    {
+                        Image cached;
+                        if (!GradedIcons.TryGetValue(this.Settings.BehindLosingTimeIcon.Location + "_5", out cached))
+                        {
+                            icon = new Bitmap(this.Settings.BehindLosingTimeIcon.Location);
+                            GradedIcons.Add(this.Settings.BehindLosingTimeIcon.Location + "_5", icon);
+                        }
+                        else
+                        {
+                            icon = cached;
+                        }
+                    }
+
+                }
+            }
+
+            return icon;
+        }
+
+
+
+
+
 
         public void DrawVertical(Graphics g, LiveSplitState state, float width, Region clipRegion)
         {
@@ -735,7 +782,7 @@ namespace LiveSplit.UI.Components
                                                     state.CurrentSplit == Split;
 
                 Cache.Restart();
-                Cache["Icon"] = Split.Icon;
+                Cache["Icon"] = this.GetIcon(state, state.Run.IndexOf(Split));
                 if (Cache.HasChanged)
                 {
                     if (Split.Icon == null)

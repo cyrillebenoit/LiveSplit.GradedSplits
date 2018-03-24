@@ -89,6 +89,7 @@
     <Compile Include="UI\Components\GradedColumnSettings.Designer.cs">
       <DependentUpon>GradedColumnSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\GradedIconsApplicationState.cs" />
     <Compile Include="UI\GradedIconState.cs" />
     <Compile Include="UI\GradedColumnType.cs" />
     <Compile Include="UI\GradedExtendedGradientType.cs" />

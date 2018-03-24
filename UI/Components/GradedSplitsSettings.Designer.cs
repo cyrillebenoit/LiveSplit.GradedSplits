@@ -103,6 +103,11 @@
             this.label10 = new System.Windows.Forms.Label();
             this.chkAutomaticAbbreviations = new System.Windows.Forms.CheckBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.IconApplicationState_Radio_CurrentRunAndComparison = new System.Windows.Forms.RadioButton();
+            this.IconApplicationState_Radio_Comparison = new System.Windows.Forms.RadioButton();
+            this.IconApplicationState_Radio_CurrentRun = new System.Windows.Forms.RadioButton();
+            this.IconApplicationState_Radio_Disabled = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
             this.Radio_BehindLosing_UsePercent = new System.Windows.Forms.RadioButton();
@@ -160,6 +165,7 @@
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBox10.SuspendLayout();
+            this.groupBox11.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
             this.tableLayoutPanel16.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BehindLosing_Percent)).BeginInit();
@@ -489,11 +495,11 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 260F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 187F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 215F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(445, 1066);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(445, 1246);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox3
@@ -579,7 +585,7 @@
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox4, 4);
             this.groupBox4.Controls.Add(this.tableLayoutPanel5);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(3, 899);
+            this.groupBox4.Location = new System.Drawing.Point(3, 959);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(439, 209);
             this.groupBox4.TabIndex = 20;
@@ -789,7 +795,7 @@
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox6, 4);
             this.groupBox6.Controls.Add(this.tableLayoutPanel7);
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox6.Location = new System.Drawing.Point(3, 712);
+            this.groupBox6.Location = new System.Drawing.Point(3, 772);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(439, 181);
             this.groupBox6.TabIndex = 19;
@@ -961,9 +967,9 @@
             this.groupColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.groupColumns, 4);
             this.groupColumns.Controls.Add(this.tableColumns);
-            this.groupColumns.Location = new System.Drawing.Point(3, 1114);
+            this.groupColumns.Location = new System.Drawing.Point(3, 1177);
             this.groupColumns.Name = "groupColumns";
-            this.groupColumns.Size = new System.Drawing.Size(439, 7);
+            this.groupColumns.Size = new System.Drawing.Size(439, 62);
             this.groupColumns.TabIndex = 21;
             this.groupColumns.TabStop = false;
             this.groupColumns.Text = "Columns";
@@ -984,14 +990,14 @@
             this.tableColumns.Name = "tableColumns";
             this.tableColumns.RowCount = 1;
             this.tableColumns.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableColumns.Size = new System.Drawing.Size(433, 0);
+            this.tableColumns.Size = new System.Drawing.Size(433, 43);
             this.tableColumns.TabIndex = 0;
             // 
             // chkColumnLabels
             // 
             this.chkColumnLabels.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.chkColumnLabels.AutoSize = true;
-            this.chkColumnLabels.Location = new System.Drawing.Point(7, 6);
+            this.chkColumnLabels.Location = new System.Drawing.Point(7, 13);
             this.chkColumnLabels.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkColumnLabels.Name = "chkColumnLabels";
             this.chkColumnLabels.Size = new System.Drawing.Size(134, 17);
@@ -1003,7 +1009,7 @@
             // btnAddColumn
             // 
             this.btnAddColumn.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnAddColumn.Location = new System.Drawing.Point(355, 3);
+            this.btnAddColumn.Location = new System.Drawing.Point(355, 10);
             this.btnAddColumn.Name = "btnAddColumn";
             this.btnAddColumn.Size = new System.Drawing.Size(75, 23);
             this.btnAddColumn.TabIndex = 2;
@@ -1015,7 +1021,7 @@
             // 
             this.btnLabelColor.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btnLabelColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnLabelColor.Location = new System.Drawing.Point(261, 3);
+            this.btnLabelColor.Location = new System.Drawing.Point(261, 10);
             this.btnLabelColor.Name = "btnLabelColor";
             this.btnLabelColor.Size = new System.Drawing.Size(23, 23);
             this.btnLabelColor.TabIndex = 1;
@@ -1026,7 +1032,7 @@
             // 
             this.lblLabelsColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.lblLabelsColor.AutoSize = true;
-            this.lblLabelsColor.Location = new System.Drawing.Point(147, 8);
+            this.lblLabelsColor.Location = new System.Drawing.Point(147, 15);
             this.lblLabelsColor.Name = "lblLabelsColor";
             this.lblLabelsColor.Size = new System.Drawing.Size(108, 13);
             this.lblLabelsColor.TabIndex = 3;
@@ -1187,18 +1193,81 @@
             // 
             // groupBox10
             // 
+            this.groupBox10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox10, 4);
+            this.groupBox10.Controls.Add(this.groupBox11);
             this.groupBox10.Controls.Add(this.tableLayoutPanel11);
-            this.groupBox10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox10.Location = new System.Drawing.Point(3, 512);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(439, 194);
+            this.groupBox10.Size = new System.Drawing.Size(439, 254);
             this.groupBox10.TabIndex = 29;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Graded Icons";
             // 
+            // groupBox11
+            // 
+            this.groupBox11.Controls.Add(this.IconApplicationState_Radio_CurrentRunAndComparison);
+            this.groupBox11.Controls.Add(this.IconApplicationState_Radio_Comparison);
+            this.groupBox11.Controls.Add(this.IconApplicationState_Radio_CurrentRun);
+            this.groupBox11.Controls.Add(this.IconApplicationState_Radio_Disabled);
+            this.groupBox11.Location = new System.Drawing.Point(6, 12);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(427, 65);
+            this.groupBox11.TabIndex = 1;
+            this.groupBox11.TabStop = false;
+            // 
+            // IconApplicationState_Radio_CurrentRunAndComparison
+            // 
+            this.IconApplicationState_Radio_CurrentRunAndComparison.AutoSize = true;
+            this.IconApplicationState_Radio_CurrentRunAndComparison.Location = new System.Drawing.Point(162, 30);
+            this.IconApplicationState_Radio_CurrentRunAndComparison.Name = "IconApplicationState_Radio_CurrentRunAndComparison";
+            this.IconApplicationState_Radio_CurrentRunAndComparison.Size = new System.Drawing.Size(228, 30);
+            this.IconApplicationState_Radio_CurrentRunAndComparison.TabIndex = 3;
+            this.IconApplicationState_Radio_CurrentRunAndComparison.Text = "Override current live run and personal best \r\nwith Graded Icons";
+            this.IconApplicationState_Radio_CurrentRunAndComparison.UseVisualStyleBackColor = true;
+            this.IconApplicationState_Radio_CurrentRunAndComparison.CheckedChanged += new System.EventHandler(this.IconApplicationState_Radio_CurrentRunAndComparison_CheckedChanged);
+            // 
+            // IconApplicationState_Radio_Comparison
+            // 
+            this.IconApplicationState_Radio_Comparison.AutoSize = true;
+            this.IconApplicationState_Radio_Comparison.Location = new System.Drawing.Point(6, 30);
+            this.IconApplicationState_Radio_Comparison.Name = "IconApplicationState_Radio_Comparison";
+            this.IconApplicationState_Radio_Comparison.Size = new System.Drawing.Size(134, 30);
+            this.IconApplicationState_Radio_Comparison.TabIndex = 2;
+            this.IconApplicationState_Radio_Comparison.Text = "Override personal best \r\nwith Graded Icons";
+            this.IconApplicationState_Radio_Comparison.UseVisualStyleBackColor = true;
+            this.IconApplicationState_Radio_Comparison.CheckedChanged += new System.EventHandler(this.IconApplicationState_Radio_Comparison_CheckedChanged);
+            // 
+            // IconApplicationState_Radio_CurrentRun
+            // 
+            this.IconApplicationState_Radio_CurrentRun.AutoSize = true;
+            this.IconApplicationState_Radio_CurrentRun.Location = new System.Drawing.Point(162, 10);
+            this.IconApplicationState_Radio_CurrentRun.Name = "IconApplicationState_Radio_CurrentRun";
+            this.IconApplicationState_Radio_CurrentRun.Size = new System.Drawing.Size(227, 17);
+            this.IconApplicationState_Radio_CurrentRun.TabIndex = 1;
+            this.IconApplicationState_Radio_CurrentRun.Text = "Override current live run with Graded Icons";
+            this.IconApplicationState_Radio_CurrentRun.UseVisualStyleBackColor = true;
+            this.IconApplicationState_Radio_CurrentRun.CheckedChanged += new System.EventHandler(this.IconApplicationState_Radio_CurrentRun_CheckedChanged);
+            // 
+            // IconApplicationState_Radio_Disabled
+            // 
+            this.IconApplicationState_Radio_Disabled.AutoSize = true;
+            this.IconApplicationState_Radio_Disabled.Checked = true;
+            this.IconApplicationState_Radio_Disabled.Location = new System.Drawing.Point(6, 10);
+            this.IconApplicationState_Radio_Disabled.Name = "IconApplicationState_Radio_Disabled";
+            this.IconApplicationState_Radio_Disabled.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.IconApplicationState_Radio_Disabled.Size = new System.Drawing.Size(140, 17);
+            this.IconApplicationState_Radio_Disabled.TabIndex = 0;
+            this.IconApplicationState_Radio_Disabled.TabStop = true;
+            this.IconApplicationState_Radio_Disabled.Text = "Don\'t override any Icons";
+            this.IconApplicationState_Radio_Disabled.UseVisualStyleBackColor = true;
+            this.IconApplicationState_Radio_Disabled.CheckedChanged += new System.EventHandler(this.IconApplicationState_Radio_Disabled_CheckedChanged);
+            // 
             // tableLayoutPanel11
             // 
+            this.tableLayoutPanel11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel11.ColumnCount = 2;
             this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -1214,7 +1283,7 @@
             this.tableLayoutPanel11.Controls.Add(this.BestSegmentIconButton, 0, 0);
             this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel12, 1, 0);
             this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel15, 1, 3);
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(4, 20);
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(4, 83);
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
             this.tableLayoutPanel11.RowCount = 5;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
@@ -1222,7 +1291,7 @@
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(429, 168);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(429, 171);
             this.tableLayoutPanel11.TabIndex = 0;
             // 
             // tableLayoutPanel16
@@ -1244,43 +1313,46 @@
             this.tableLayoutPanel16.Name = "tableLayoutPanel16";
             this.tableLayoutPanel16.RowCount = 1;
             this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel16.Size = new System.Drawing.Size(395, 34);
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(395, 35);
             this.tableLayoutPanel16.TabIndex = 14;
             // 
             // Radio_BehindLosing_UsePercent
             // 
             this.Radio_BehindLosing_UsePercent.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.Radio_BehindLosing_UsePercent.AutoSize = true;
-            this.Radio_BehindLosing_UsePercent.Location = new System.Drawing.Point(208, 8);
+            this.Radio_BehindLosing_UsePercent.Location = new System.Drawing.Point(208, 9);
             this.Radio_BehindLosing_UsePercent.Name = "Radio_BehindLosing_UsePercent";
             this.Radio_BehindLosing_UsePercent.Size = new System.Drawing.Size(130, 17);
             this.Radio_BehindLosing_UsePercent.TabIndex = 0;
             this.Radio_BehindLosing_UsePercent.Text = "Behind Best Seg By %";
             this.Radio_BehindLosing_UsePercent.UseVisualStyleBackColor = true;
+            this.Radio_BehindLosing_UsePercent.CheckedChanged += new System.EventHandler(this.Radio_BehindLosing_UsePercent_CheckedChanged);
             // 
             // Radio_BehindLosing_UseDefault
             // 
             this.Radio_BehindLosing_UseDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.Radio_BehindLosing_UseDefault.AutoSize = true;
-            this.Radio_BehindLosing_UseDefault.Location = new System.Drawing.Point(81, 8);
+            this.Radio_BehindLosing_UseDefault.Location = new System.Drawing.Point(81, 9);
             this.Radio_BehindLosing_UseDefault.Name = "Radio_BehindLosing_UseDefault";
             this.Radio_BehindLosing_UseDefault.Size = new System.Drawing.Size(121, 17);
             this.Radio_BehindLosing_UseDefault.TabIndex = 1;
             this.Radio_BehindLosing_UseDefault.Text = "On Behind (Losing)";
             this.Radio_BehindLosing_UseDefault.UseVisualStyleBackColor = true;
+            this.Radio_BehindLosing_UseDefault.CheckedChanged += new System.EventHandler(this.Radio_BehindLosing_UseDefault_CheckedChanged);
             // 
             // Radio_BehindLosing_Disable
             // 
             this.Radio_BehindLosing_Disable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.Radio_BehindLosing_Disable.AutoSize = true;
             this.Radio_BehindLosing_Disable.Checked = true;
-            this.Radio_BehindLosing_Disable.Location = new System.Drawing.Point(3, 8);
+            this.Radio_BehindLosing_Disable.Location = new System.Drawing.Point(3, 9);
             this.Radio_BehindLosing_Disable.Name = "Radio_BehindLosing_Disable";
             this.Radio_BehindLosing_Disable.Size = new System.Drawing.Size(72, 17);
             this.Radio_BehindLosing_Disable.TabIndex = 2;
             this.Radio_BehindLosing_Disable.TabStop = true;
             this.Radio_BehindLosing_Disable.Text = "Don\'t Use";
             this.Radio_BehindLosing_Disable.UseVisualStyleBackColor = true;
+            this.Radio_BehindLosing_Disable.CheckedChanged += new System.EventHandler(this.Radio_BehindLosing_Disable_CheckedChanged);
             // 
             // BehindLosing_Percent
             // 
@@ -1299,6 +1371,7 @@
             0,
             0,
             0});
+            this.BehindLosing_Percent.ValueChanged += new System.EventHandler(this.BehindLosing_Percent_ValueChanged);
             // 
             // tableLayoutPanel14
             // 
@@ -1332,6 +1405,7 @@
             this.Radio_AheadLosing_UsePercent.TabIndex = 0;
             this.Radio_AheadLosing_UsePercent.Text = "Behind Best Seg By %";
             this.Radio_AheadLosing_UsePercent.UseVisualStyleBackColor = true;
+            this.Radio_AheadLosing_UsePercent.CheckedChanged += new System.EventHandler(this.Radio_AheadLosing_UsePercent_CheckedChanged);
             // 
             // Radio_AheadLosing_UseDefault
             // 
@@ -1343,6 +1417,7 @@
             this.Radio_AheadLosing_UseDefault.TabIndex = 1;
             this.Radio_AheadLosing_UseDefault.Text = "On Ahead (Losing)";
             this.Radio_AheadLosing_UseDefault.UseVisualStyleBackColor = true;
+            this.Radio_AheadLosing_UseDefault.CheckedChanged += new System.EventHandler(this.Radio_AheadLosing_UseDefault_CheckedChanged);
             // 
             // Radio_AheadLosing_Disable
             // 
@@ -1356,6 +1431,7 @@
             this.Radio_AheadLosing_Disable.TabStop = true;
             this.Radio_AheadLosing_Disable.Text = "Don\'t Use";
             this.Radio_AheadLosing_Disable.UseVisualStyleBackColor = true;
+            this.Radio_AheadLosing_Disable.CheckedChanged += new System.EventHandler(this.Radio_AheadLosing_Disable_CheckedChanged);
             // 
             // AheadLosing_Percent
             // 
@@ -1374,6 +1450,7 @@
             0,
             0,
             0});
+            this.AheadLosing_Percent.ValueChanged += new System.EventHandler(this.AheadLosing_Percent_ValueChanged);
             // 
             // tableLayoutPanel13
             // 
@@ -1407,6 +1484,7 @@
             this.Radio_AheadGaining_UsePercent.TabIndex = 0;
             this.Radio_AheadGaining_UsePercent.Text = "Behind Best Seg By %";
             this.Radio_AheadGaining_UsePercent.UseVisualStyleBackColor = true;
+            this.Radio_AheadGaining_UsePercent.CheckedChanged += new System.EventHandler(this.Radio_AheadGaining_UsePercent_CheckedChanged);
             // 
             // Radio_AheadGaining_UseDefault
             // 
@@ -1418,6 +1496,7 @@
             this.Radio_AheadGaining_UseDefault.TabIndex = 1;
             this.Radio_AheadGaining_UseDefault.Text = "On Ahead (Gaining)";
             this.Radio_AheadGaining_UseDefault.UseVisualStyleBackColor = true;
+            this.Radio_AheadGaining_UseDefault.CheckedChanged += new System.EventHandler(this.Radio_AheadGaining_UseDefault_CheckedChanged);
             // 
             // Radio_AheadGaining_Disable
             // 
@@ -1431,6 +1510,7 @@
             this.Radio_AheadGaining_Disable.TabStop = true;
             this.Radio_AheadGaining_Disable.Text = "Don\'t Use";
             this.Radio_AheadGaining_Disable.UseVisualStyleBackColor = true;
+            this.Radio_AheadGaining_Disable.CheckedChanged += new System.EventHandler(this.Radio_AheadGaining_Disable_CheckedChanged);
             // 
             // AheadGaining_Percent
             // 
@@ -1449,6 +1529,7 @@
             0,
             0,
             0});
+            this.AheadGaining_Percent.ValueChanged += new System.EventHandler(this.AheadGaining_Percent_ValueChanged);
             // 
             // AheadGainingIconButton
             // 
@@ -1540,6 +1621,7 @@
             0,
             0,
             0});
+            this.BestSeg_Percent.ValueChanged += new System.EventHandler(this.BestSeg_Percent_ValueChanged);
             // 
             // Radio_BestSeg_UsePercent
             // 
@@ -1563,6 +1645,7 @@
             this.Radio_BestSeg_UseDefault.TabIndex = 1;
             this.Radio_BestSeg_UseDefault.Text = "Show on Best Seg.";
             this.Radio_BestSeg_UseDefault.UseVisualStyleBackColor = true;
+            this.Radio_BestSeg_UseDefault.CheckedChanged += new System.EventHandler(this.Radio_BestSeg_UseDefault_CheckedChanged);
             // 
             // Radio_BestSeg_Disable
             // 
@@ -1576,6 +1659,7 @@
             this.Radio_BestSeg_Disable.TabStop = true;
             this.Radio_BestSeg_Disable.Text = "Don\'t Use";
             this.Radio_BestSeg_Disable.UseVisualStyleBackColor = true;
+            this.Radio_BestSeg_Disable.CheckedChanged += new System.EventHandler(this.Radio_BestSeg_Disable_CheckedChanged);
             // 
             // tableLayoutPanel15
             // 
@@ -1609,6 +1693,7 @@
             this.Radio_BehindGaining_UsePercent.TabIndex = 0;
             this.Radio_BehindGaining_UsePercent.Text = "Behind Best Seg By %";
             this.Radio_BehindGaining_UsePercent.UseVisualStyleBackColor = true;
+            this.Radio_BehindGaining_UsePercent.CheckedChanged += new System.EventHandler(this.Radio_BehindGaining_UsePercent_CheckedChanged);
             // 
             // Radio_BehindGaining_UseDefault
             // 
@@ -1620,6 +1705,7 @@
             this.Radio_BehindGaining_UseDefault.TabIndex = 1;
             this.Radio_BehindGaining_UseDefault.Text = "On Behind (Gaining)";
             this.Radio_BehindGaining_UseDefault.UseVisualStyleBackColor = true;
+            this.Radio_BehindGaining_UseDefault.CheckedChanged += new System.EventHandler(this.Radio_BehindGaining_UseDefault_CheckedChanged);
             // 
             // Radio_BehindGaining_Disable
             // 
@@ -1633,6 +1719,7 @@
             this.Radio_BehindGaining_Disable.TabStop = true;
             this.Radio_BehindGaining_Disable.Text = "Don\'t Use";
             this.Radio_BehindGaining_Disable.UseVisualStyleBackColor = true;
+            this.Radio_BehindGaining_Disable.CheckedChanged += new System.EventHandler(this.Radio_BehindGaining_Disable_CheckedChanged);
             // 
             // BehindGaining_Percent
             // 
@@ -1651,6 +1738,7 @@
             0,
             0,
             0});
+            this.BehindGaining_Percent.ValueChanged += new System.EventHandler(this.BehindGaining_Percent_ValueChanged);
             // 
             // GradedSplitsSettings
             // 
@@ -1659,7 +1747,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "GradedSplitsSettings";
             this.Padding = new System.Windows.Forms.Padding(7);
-            this.Size = new System.Drawing.Size(459, 1080);
+            this.Size = new System.Drawing.Size(459, 1260);
             this.Load += new System.EventHandler(this.SplitsSettings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trkSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dmnUpcomingSegments)).EndInit();
@@ -1696,6 +1784,8 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.groupBox10.ResumeLayout(false);
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
             this.tableLayoutPanel11.ResumeLayout(false);
             this.tableLayoutPanel16.ResumeLayout(false);
             this.tableLayoutPanel16.PerformLayout();
@@ -1824,5 +1914,10 @@
         private System.Windows.Forms.NumericUpDown AheadGaining_Percent;
         private System.Windows.Forms.NumericUpDown BestSeg_Percent;
         private System.Windows.Forms.RadioButton Radio_BestSeg_UsePercent;
+        private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.RadioButton IconApplicationState_Radio_CurrentRunAndComparison;
+        private System.Windows.Forms.RadioButton IconApplicationState_Radio_Comparison;
+        private System.Windows.Forms.RadioButton IconApplicationState_Radio_CurrentRun;
+        private System.Windows.Forms.RadioButton IconApplicationState_Radio_Disabled;
     }
 }
