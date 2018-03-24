@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace LiveSplit.UI.Components
 {
-    public class LabelsComponent : IComponent
+    public class GradedLabelsComponent : IComponent
     {
-        public SplitsSettings Settings { get; set; }
+        public GradedSplitsSettings Settings { get; set; }
 
         protected SimpleLabel MeasureTimeLabel { get; set; }
         protected SimpleLabel MeasureDeltaLabel { get; set; }
@@ -26,7 +26,7 @@ namespace LiveSplit.UI.Components
 
         public GraphicsCache Cache { get; set; }
 
-        public IEnumerable<ColumnData> ColumnsList { get; set; }
+        public IEnumerable<GradedColumnData> ColumnsList { get; set; }
         public IList<SimpleLabel> LabelsList { get; set; }
 
         public float PaddingTop => 0f;
@@ -43,15 +43,15 @@ namespace LiveSplit.UI.Components
         public float MinimumHeight { get; set; }
 
         public IDictionary<string, Action> ContextMenuControls => null;
-        public LabelsComponent(SplitsSettings settings, IEnumerable<ColumnData> columns)
+        public GradedLabelsComponent(GradedSplitsSettings settings, IEnumerable<GradedColumnData> columns)
         {
             Settings = settings;
             MinimumHeight = 31;
 
             MeasureTimeLabel = new SimpleLabel();
             MeasureDeltaLabel = new SimpleLabel();
-            TimeFormatter = new RegularSplitTimeFormatter(Settings.SplitTimesAccuracy);
-            DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
+            TimeFormatter = new GradedRegularSplitTimeFormatter(Settings.SplitTimesAccuracy);
+            DeltaTimeFormatter = new GradedDeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
 
             Cache = new GraphicsCache();
             LabelsList = new List<SimpleLabel>();
@@ -60,7 +60,7 @@ namespace LiveSplit.UI.Components
 
         private void DrawGeneral(Graphics g, LiveSplitState state, float width, float height, LayoutMode mode)
         {
-            if (Settings.BackgroundGradient == ExtendedGradientType.Alternating)
+            if (Settings.BackgroundGradient == GradedExtendedGradientType.Alternating)
                 g.FillRectangle(new SolidBrush(
                     Settings.BackgroundColor
                     ), 0, 0, width, height);
@@ -78,12 +78,12 @@ namespace LiveSplit.UI.Components
 
             if (Settings.SplitTimesAccuracy != CurrentAccuracy)
             {
-                TimeFormatter = new RegularSplitTimeFormatter(Settings.SplitTimesAccuracy);
+                TimeFormatter = new GradedRegularSplitTimeFormatter(Settings.SplitTimesAccuracy);
                 CurrentAccuracy = Settings.SplitTimesAccuracy;
             }
             if (Settings.DeltasAccuracy != CurrentDeltaAccuracy || Settings.DropDecimals != CurrentDropDecimals)
             {
-                DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
+                DeltaTimeFormatter = new GradedDeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
                 CurrentDeltaAccuracy = Settings.DeltasAccuracy;
                 CurrentDropDecimals = Settings.DropDecimals;
             }
@@ -105,9 +105,9 @@ namespace LiveSplit.UI.Components
                     var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
 
                     var labelWidth = 0f;
-                    if (column.Type == ColumnType.DeltaorSplitTime || column.Type == ColumnType.SegmentDeltaorSegmentTime)
+                    if (column.Type == GradedColumnType.DeltaorSplitTime || column.Type == GradedColumnType.SegmentDeltaorSegmentTime)
                         labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
-                    else if (column.Type == ColumnType.Delta || column.Type == ColumnType.SegmentDelta)
+                    else if (column.Type == GradedColumnType.Delta || column.Type == GradedColumnType.SegmentDelta)
                         labelWidth = MeasureDeltaLabel.ActualWidth;
                     else
                         labelWidth = MeasureTimeLabel.ActualWidth;

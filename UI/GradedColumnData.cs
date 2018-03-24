@@ -3,14 +3,14 @@ using System.Xml;
 
 namespace LiveSplit.UI
 {
-    public class ColumnData
+    public class GradedColumnData
     {
         public string Name { get; set; }
-        public ColumnType Type { get; set; }
+        public GradedColumnType Type { get; set; }
         public string Comparison { get; set; }
         public string TimingMethod { get; set; }
 
-        public ColumnData(string name, ColumnType type, string comparison, string method)
+        public GradedColumnData(string name, GradedColumnType type, string comparison, string method)
         {
             Name = name;
             Type = type;
@@ -18,11 +18,11 @@ namespace LiveSplit.UI
             TimingMethod = method;
         }
 
-        public static ColumnData FromXml(XmlNode node)
+        public static GradedColumnData FromXml(XmlNode node)
         {
             var element = (XmlElement)node;
-            return new ColumnData(element["Name"].InnerText,
-                (ColumnType)Enum.Parse(typeof(ColumnType), element["Type"].InnerText),
+            return new GradedColumnData(element["Name"].InnerText,
+                (GradedColumnType)Enum.Parse(typeof(GradedColumnType), element["Type"].InnerText),
                 element["Comparison"].InnerText,
                 element["TimingMethod"].InnerText);
         }

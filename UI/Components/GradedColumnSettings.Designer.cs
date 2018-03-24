@@ -1,6 +1,6 @@
 ﻿namespace LiveSplit.UI.Components
 {
-    partial class ColumnSettings
+    partial class GradedColumnSettings
     {
         /// <summary>
         /// Required designer variable.

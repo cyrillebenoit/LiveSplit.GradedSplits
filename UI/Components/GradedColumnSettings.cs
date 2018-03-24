@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace LiveSplit.UI.Components
 {
-    public partial class ColumnSettings : UserControl
+    public partial class GradedColumnSettings : UserControl
     {
         public string ColumnName { get { return Data.Name; } set { Data.Name = value; } }
         public string Type
@@ -22,9 +22,9 @@ namespace LiveSplit.UI.Components
         public string Comparison { get { return Data.Comparison; } set { Data.Comparison = value; } }
         public string TimingMethod { get { return Data.TimingMethod; } set { Data.TimingMethod = value; } }
 
-        public ColumnData Data { get; set; }
+        public GradedColumnData Data { get; set; }
         protected LiveSplitState CurrentState { get; set; }
-        protected IList<ColumnSettings> ColumnsList { get; set; }
+        protected IList<GradedColumnSettings> ColumnsList { get; set; }
 
         protected int ColumnIndex => ColumnsList.IndexOf(this);
         protected int TotalColumns => ColumnsList.Count;
@@ -33,11 +33,11 @@ namespace LiveSplit.UI.Components
         public event EventHandler MovedUp;
         public event EventHandler MovedDown;
 
-        public ColumnSettings(LiveSplitState state, string columnName, IList<ColumnSettings> columnsList)
+        public GradedColumnSettings(LiveSplitState state, string columnName, IList<GradedColumnSettings> columnsList)
         {
             InitializeComponent();
 
-            Data = new ColumnData(columnName, ColumnType.Delta, "Current Comparison", "Current Timing Method");
+            Data = new GradedColumnData(columnName, GradedColumnType.Delta, "Current Comparison", "Current Timing Method");
 
             CurrentState = state;
             ColumnsList = columnsList; 
@@ -86,7 +86,7 @@ namespace LiveSplit.UI.Components
             cmbComparison.Items.Clear();
             cmbComparison.Items.Add("Current Comparison");
 
-            if (Data.Type == ColumnType.Delta || Data.Type == ColumnType.DeltaorSplitTime || Data.Type == ColumnType.SplitTime)
+            if (Data.Type == GradedColumnType.Delta || Data.Type == GradedColumnType.DeltaorSplitTime || Data.Type == GradedColumnType.SplitTime)
                 cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x != NoneComparisonGenerator.ComparisonName).ToArray());
             else
             {
@@ -102,25 +102,25 @@ namespace LiveSplit.UI.Components
             cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        private static string GetColumnType(ColumnType type)
+        private static string GetColumnType(GradedColumnType type)
         {
-            if (type == ColumnType.SplitTime)
+            if (type == GradedColumnType.SplitTime)
                 return "Split Time";
-            else if (type == ColumnType.Delta)
+            else if (type == GradedColumnType.Delta)
                 return "Delta";
-            else if (type == ColumnType.DeltaorSplitTime)
+            else if (type == GradedColumnType.DeltaorSplitTime)
                 return "Delta or Split Time";
-            else if (type == ColumnType.SegmentTime)
+            else if (type == GradedColumnType.SegmentTime)
                 return "Segment Time";
-            else if (type == ColumnType.SegmentDelta)
+            else if (type == GradedColumnType.SegmentDelta)
                 return "Segment Delta";
             else
                 return "Segment Delta or Segment Time";
         }
 
-        private static ColumnType ParseColumnType(string columnType)
+        private static GradedColumnType ParseColumnType(string columnType)
         {
-            return (ColumnType)Enum.Parse(typeof(ColumnType), columnType.Replace(" ", string.Empty));
+            return (GradedColumnType)Enum.Parse(typeof(GradedColumnType), columnType.Replace(" ", string.Empty));
         }
 
         private void btnRemoveColumn_Click(object sender, EventArgs e)

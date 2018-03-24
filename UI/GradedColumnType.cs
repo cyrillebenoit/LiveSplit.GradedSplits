@@ -1,6 +1,6 @@
 ﻿namespace LiveSplit.UI
 {
-    public enum ColumnType
+    public enum GradedColumnType
     {
         Delta, SplitTime, DeltaorSplitTime, SegmentDelta, SegmentTime, SegmentDeltaorSegmentTime
     }

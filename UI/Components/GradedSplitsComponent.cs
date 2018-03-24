@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace LiveSplit.UI.Components
 {
-    public class SplitsComponent : IComponent
+    public class GradedSplitsComponent : IComponent
     {
         public ComponentRendererComponent InternalComponent { get; protected set; }
 
@@ -18,9 +18,9 @@ namespace LiveSplit.UI.Components
         public float PaddingRight => InternalComponent.PaddingRight;
 
         protected IList<IComponent> Components { get; set; }
-        protected IList<SplitComponent> SplitComponents { get; set; }
+        protected IList<GradedSplitComponent> SplitComponents { get; set; }
 
-        protected SplitsSettings Settings { get; set; }
+        protected GradedSplitsSettings Settings { get; set; }
 
         private Dictionary<Image, Image> ShadowImages { get; set; }
 
@@ -37,9 +37,9 @@ namespace LiveSplit.UI.Components
         protected LayoutMode OldLayoutMode { get; set; }
         protected Color OldShadowsColor { get; set; }
 
-        protected IEnumerable<ColumnData> ColumnsList => Settings.ColumnsList.Select(x => x.Data);
+        protected IEnumerable<GradedColumnData> ColumnsList => Settings.ColumnsList.Select(x => x.Data);
 
-        public string ComponentName => "Splits";
+        public string ComponentName => "Graded Splits";
 
         public float VerticalHeight => InternalComponent.VerticalHeight;
 
@@ -51,10 +51,10 @@ namespace LiveSplit.UI.Components
 
         public IDictionary<string, Action> ContextMenuControls => null;
 
-        public SplitsComponent(LiveSplitState state)
+        public GradedSplitsComponent(LiveSplitState state)
         {
             CurrentState = state;
-            Settings = new SplitsSettings(state);
+            Settings = new GradedSplitsSettings(state);
             InternalComponent = new ComponentRendererComponent();
             ShadowImages = new Dictionary<Image, Image>();
             visualSplitCount = Settings.VisualSplitCount;
@@ -86,14 +86,14 @@ namespace LiveSplit.UI.Components
         private void RebuildVisualSplits()
         {
             Components = new List<IComponent>();
-            SplitComponents = new List<SplitComponent>();
+            SplitComponents = new List<GradedSplitComponent>();
             InternalComponent.VisibleComponents = Components;
 
             var totalSplits = Settings.ShowBlankSplits ? Math.Max(Settings.VisualSplitCount, visualSplitCount) : visualSplitCount;
 
             if (Settings.ShowColumnLabels && CurrentState.Layout.Mode == LayoutMode.Vertical)
             {
-                Components.Add(new LabelsComponent(Settings, ColumnsList));
+                Components.Add(new GradedLabelsComponent(Settings, ColumnsList));
                 Components.Add(new SeparatorComponent());
             }
 
@@ -108,7 +108,7 @@ namespace LiveSplit.UI.Components
                         Components.Add(new ThinSeparatorComponent());
                 }
 
-                var splitComponent = new SplitComponent(Settings, ColumnsList);
+                var splitComponent = new GradedSplitComponent(Settings, ColumnsList);
                 Components.Add(splitComponent);
                 if (i < visualSplitCount - 1 || i == (Settings.LockLastSplit ? totalSplits - 1 : visualSplitCount - 1))
                     SplitComponents.Add(splitComponent);                   
@@ -184,9 +184,9 @@ namespace LiveSplit.UI.Components
                     var index = Components.IndexOf(separator);
                     if (state.CurrentPhase == TimerPhase.Running || state.CurrentPhase == TimerPhase.Paused)
                     {
-                        if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
+                        if (((GradedSplitComponent)Components[index + 1]).Split == state.CurrentSplit)
                             separator.LockToBottom = true;
-                        else if (Components[index - 1] is SplitComponent && ((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
+                        else if (Components[index - 1] is GradedSplitComponent && ((GradedSplitComponent)Components[index - 1]).Split == state.CurrentSplit)
                             separator.LockToBottom = false;
                     }
                     if (Settings.AlwaysShowLastSplit && Settings.SeparatorLastSplit && index == LastSplitSeparatorIndex)
@@ -213,9 +213,9 @@ namespace LiveSplit.UI.Components
                     var index = Components.IndexOf(separator);
                     if (state.CurrentPhase == TimerPhase.Running || state.CurrentPhase == TimerPhase.Paused)
                     {
-                        if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
+                        if (((GradedSplitComponent)Components[index + 1]).Split == state.CurrentSplit)
                             separator.LockToBottom = true;
-                        else if (((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
+                        else if (((GradedSplitComponent)Components[index - 1]).Split == state.CurrentSplit)
                             separator.LockToBottom = false;
                     }
                 }
@@ -259,18 +259,18 @@ namespace LiveSplit.UI.Components
 
         void DrawBackground(Graphics g, float width, float height)
         {
-            if (Settings.BackgroundGradient != ExtendedGradientType.Alternating
+            if (Settings.BackgroundGradient != GradedExtendedGradientType.Alternating
                 && (Settings.BackgroundColor.A > 0
-                || Settings.BackgroundGradient != ExtendedGradientType.Plain
+                || Settings.BackgroundGradient != GradedExtendedGradientType.Plain
                 && Settings.BackgroundColor2.A > 0))
             {
                 var gradientBrush = new LinearGradientBrush(
                             new PointF(0, 0),
-                            Settings.BackgroundGradient == ExtendedGradientType.Horizontal
+                            Settings.BackgroundGradient == GradedExtendedGradientType.Horizontal
                             ? new PointF(width, 0)
                             : new PointF(0, height),
                             Settings.BackgroundColor,
-                            Settings.BackgroundGradient == ExtendedGradientType.Plain
+                            Settings.BackgroundGradient == GradedExtendedGradientType.Plain
                             ? Settings.BackgroundColor
                             : Settings.BackgroundColor2);
                 g.FillRectangle(gradientBrush, 0, 0, width, height);

@@ -10,18 +10,19 @@ using System.Windows.Forms;
 
 namespace LiveSplit.UI.Components
 {
-    public class SplitComponent : IComponent
+    public class GradedSplitComponent : IComponent
     {
         public ISegment Split { get; set; }
 
         protected SimpleLabel NameLabel { get; set; }
         protected SimpleLabel MeasureTimeLabel { get; set; }
         protected SimpleLabel MeasureDeltaLabel { get; set; }
-        public SplitsSettings Settings { get; set; }
+        public GradedSplitsSettings Settings { get; set; }
 
         protected int FrameCount { get; set; }
 
         public GraphicsCache Cache { get; set; }
+        private Dictionary<string, Image> GradedIcons = new Dictionary<string, Image>();
         protected bool NeedUpdateAll { get; set; }
         protected bool IsActive { get; set; }
 
@@ -44,7 +45,7 @@ namespace LiveSplit.UI.Components
         public float PaddingBottom => 0f;
         public float PaddingRight => 0f;
 
-        public IEnumerable<ColumnData> ColumnsList { get; set; }
+        public IEnumerable<GradedColumnData> ColumnsList { get; set; }
         public IList<SimpleLabel> LabelsList { get; set; }
 
         public float VerticalHeight { get; set; }
@@ -59,7 +60,7 @@ namespace LiveSplit.UI.Components
 
         public IDictionary<string, Action> ContextMenuControls => null;
 
-        public SplitComponent(SplitsSettings settings, IEnumerable<ColumnData> columnsList)
+        public GradedSplitComponent(GradedSplitsSettings settings, IEnumerable<GradedColumnData> columnsList)
         {
             NameLabel = new SimpleLabel()
             {
@@ -70,8 +71,8 @@ namespace LiveSplit.UI.Components
             MeasureDeltaLabel = new SimpleLabel();
             Settings = settings;
             ColumnsList = columnsList;
-            TimeFormatter = new RegularSplitTimeFormatter(Settings.SplitTimesAccuracy);
-            DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
+            TimeFormatter = new GradedRegularSplitTimeFormatter(Settings.SplitTimesAccuracy);
+            DeltaTimeFormatter = new GradedDeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
             MinimumHeight = 25;
             VerticalHeight = 31;
 
@@ -82,14 +83,17 @@ namespace LiveSplit.UI.Components
             LabelsList = new List<SimpleLabel>();
         }
 
+        bool shown = false;
         private void DrawGeneral(Graphics g, LiveSplitState state, float width, float height, LayoutMode mode)
         {
             if (NeedUpdateAll)
                 UpdateAll(state);
 
-            if (Settings.BackgroundGradient == ExtendedGradientType.Alternating)
+            var splitIndex = state.Run.IndexOf(Split);
+
+            if (Settings.BackgroundGradient == GradedExtendedGradientType.Alternating)
                 g.FillRectangle(new SolidBrush(
-                    state.Run.IndexOf(Split) % 2 + (Settings.ShowColumnLabels ? 1 : 0) == 1
+                    splitIndex % 2 + (Settings.ShowColumnLabels ? 1 : 0) == 1
                     ? Settings.BackgroundColor2
                     : Settings.BackgroundColor
                     ), 0, 0, width, height);
@@ -115,12 +119,12 @@ namespace LiveSplit.UI.Components
 
             if (Settings.SplitTimesAccuracy != CurrentAccuracy)
             {
-                TimeFormatter = new RegularSplitTimeFormatter(Settings.SplitTimesAccuracy);
+                TimeFormatter = new GradedRegularSplitTimeFormatter(Settings.SplitTimesAccuracy);
                 CurrentAccuracy = Settings.SplitTimesAccuracy;
             }
             if (Settings.DeltasAccuracy != CurrentDeltaAccuracy || Settings.DropDecimals != CurrentDropDecimals)
             {
-                DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
+                DeltaTimeFormatter = new GradedDeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
                 CurrentDeltaAccuracy = Settings.DeltasAccuracy;
                 CurrentDropDecimals = Settings.DropDecimals;
             }
@@ -168,6 +172,226 @@ namespace LiveSplit.UI.Components
                 }
 
                 var icon = Split.Icon;
+
+                if (this.Settings.DisplayIcons)
+                {
+                    // If this split has already gone past:
+                    if (state.CurrentSplitIndex > splitIndex)
+                    {
+                        var splitState = SplitState.Unknown;
+
+                        var getCurrentSplitPercentageBehindBestSegment = new Func<int>(() =>
+                        {
+                            // say your best segment is 100s
+                            // it makes sense to do like < 105 = A
+                            // < 110 = B
+                            // 0.05 = (105-100)/100
+                            double bestMilliseconds = 0;
+                            if (state.CurrentTimingMethod == TimingMethod.GameTime)
+                            {
+                                bestMilliseconds = Split.BestSegmentTime.GameTime?.TotalMilliseconds ?? 0;
+                            }
+                            else if (state.CurrentTimingMethod == TimingMethod.RealTime)
+                            {
+                                bestMilliseconds = Split.BestSegmentTime.RealTime?.TotalMilliseconds ?? 0;
+                            }
+
+                            // No current best segment, gold split guaranteed A+?
+                            if (bestMilliseconds <= 0)
+                            {
+                                return 0;
+                            }
+
+                            double currentMilliseconds = 0;
+                            var priorTime = LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, state.CurrentTimingMethod);
+                            if (priorTime != null)
+                            {
+                                currentMilliseconds = priorTime.Value.TotalMilliseconds;
+                            }
+
+                            // you were super amazing or i messed up:
+                            if (currentMilliseconds <= 0)
+                            {
+                                return -1;
+                            }
+
+                            return Convert.ToInt32((((currentMilliseconds - bestMilliseconds) / bestMilliseconds) * ((double)100)));
+                        });
+
+                        if ((this.Settings.BehindLosingTimeIcon.Location != null &&
+                            this.Settings.BehindLosingTimeIcon.IconState == GradedIconState.Default) ||
+                            (this.Settings.BehindGainingTimeIcon.Location != null &&
+                            this.Settings.BehindGainingTimeIcon.IconState == GradedIconState.Default) ||
+                            (this.Settings.AheadLosingTimeIcon.Location != null &&
+                            this.Settings.AheadLosingTimeIcon.IconState == GradedIconState.Default) ||
+                            (this.Settings.AheadGainingTimeIcon.Location != null &&
+                            this.Settings.AheadGainingTimeIcon.IconState == GradedIconState.Default) ||
+                            (this.Settings.BestSegmentIcon.Location != null &&
+                            this.Settings.BestSegmentIcon.IconState == GradedIconState.Default))
+                        {
+                            var segmentDelta = LiveSplitStateHelper.GetPreviousSegmentDelta(state, splitIndex, state.CurrentComparison, state.CurrentTimingMethod);
+                            splitState = this.GetSplitState(state, segmentDelta, splitIndex, state.CurrentComparison, state.CurrentTimingMethod);
+                        }
+
+                        var iconToUse = SplitState.Unknown;
+
+                        if (this.Settings.BehindLosingTimeIcon.Location != null &&
+                            this.Settings.BehindLosingTimeIcon.IconState != GradedIconState.Disabled)
+                        {
+                            if (this.Settings.BehindLosingTimeIcon.IconState == GradedIconState.Default && splitState == SplitState.BehindLosing)
+                            {
+                                iconToUse = splitState;
+                            }
+                            else if (this.Settings.BehindLosingTimeIcon.IconState == GradedIconState.PercentageSplit)
+                            {
+                                var percentage = getCurrentSplitPercentageBehindBestSegment();
+                                if (percentage < this.Settings.BehindLosingTimeIcon.PercentageBehind)
+                                {
+                                    iconToUse = SplitState.BehindLosing;
+                                }
+                            }
+                        }
+
+                        if (this.Settings.BehindGainingTimeIcon.Location != null &&
+                            this.Settings.BehindGainingTimeIcon.IconState != GradedIconState.Disabled)
+                        {
+                            if (this.Settings.BehindGainingTimeIcon.IconState == GradedIconState.Default && splitState == SplitState.BehindGaining)
+                            {
+                                iconToUse = splitState;
+                            }
+                            else if (this.Settings.BehindGainingTimeIcon.IconState == GradedIconState.PercentageSplit)
+                            {
+                                var percentage = getCurrentSplitPercentageBehindBestSegment();
+                                if (percentage < this.Settings.BehindGainingTimeIcon.PercentageBehind)
+                                {
+                                    iconToUse = SplitState.BehindGaining;
+                                }
+                            }
+                        }
+
+                        if (this.Settings.AheadLosingTimeIcon.Location != null &&
+                            this.Settings.AheadLosingTimeIcon.IconState != GradedIconState.Disabled)
+                        {
+                            if (this.Settings.AheadLosingTimeIcon.IconState == GradedIconState.Default && splitState == SplitState.AheadLosing)
+                            {
+                                iconToUse = splitState;
+                            }
+                            else if (this.Settings.AheadLosingTimeIcon.IconState == GradedIconState.PercentageSplit)
+                            {
+                                var percentage = getCurrentSplitPercentageBehindBestSegment();
+                                if (percentage < this.Settings.AheadLosingTimeIcon.PercentageBehind)
+                                {
+                                    iconToUse = SplitState.AheadLosing;
+                                }
+                            }
+                        }
+
+                        if (this.Settings.AheadGainingTimeIcon.Location != null &&
+                            this.Settings.AheadGainingTimeIcon.IconState != GradedIconState.Disabled)
+                        {
+                            if (this.Settings.AheadGainingTimeIcon.IconState == GradedIconState.Default && splitState == SplitState.AheadGaining)
+                            {
+                                iconToUse = splitState;
+                            }
+                            else if (this.Settings.AheadGainingTimeIcon.IconState == GradedIconState.PercentageSplit)
+                            {
+                                var percentage = getCurrentSplitPercentageBehindBestSegment();
+                                if (percentage < this.Settings.AheadGainingTimeIcon.PercentageBehind)
+                                {
+                                    iconToUse = SplitState.AheadGaining;
+                                }
+                            }
+                        }
+
+                        if (this.Settings.BestSegmentIcon.Location != null &&
+                            this.Settings.BestSegmentIcon.IconState != GradedIconState.Disabled)
+                        {
+                            if (this.Settings.BestSegmentIcon.IconState == GradedIconState.Default && splitState == SplitState.BestSegment)
+                            {
+                                iconToUse = splitState;
+                            }
+                            else if (this.Settings.BestSegmentIcon.IconState == GradedIconState.PercentageSplit)
+                            {
+                                var percentage = getCurrentSplitPercentageBehindBestSegment();
+
+                                if (percentage < this.Settings.BestSegmentIcon.PercentageBehind)
+                                {
+                                    iconToUse = SplitState.BestSegment;
+                                }
+                            }
+                        }
+
+                        if (iconToUse == SplitState.BestSegment)
+                        {
+                            Image cached;
+                            if (!GradedIcons.TryGetValue(this.Settings.BestSegmentIcon.Location, out cached))
+                            {
+                                icon = new Bitmap(this.Settings.BestSegmentIcon.Location);
+                                GradedIcons.Add(this.Settings.BestSegmentIcon.Location, icon);
+                            }
+                            else
+                            {
+                                icon = cached;
+                            }
+                        }
+                        else if (iconToUse == SplitState.AheadGaining)
+                        {
+                            Image cached;
+                            if (!GradedIcons.TryGetValue(this.Settings.AheadGainingTimeIcon.Location, out cached))
+                            {
+                                icon = new Bitmap(this.Settings.AheadGainingTimeIcon.Location);
+                                GradedIcons.Add(this.Settings.AheadGainingTimeIcon.Location, icon);
+                            }
+                            else
+                            {
+                                icon = cached;
+                            }
+                        }
+                        else if (iconToUse == SplitState.AheadLosing)
+                        {
+                            Image cached;
+                            if (!GradedIcons.TryGetValue(this.Settings.AheadLosingTimeIcon.Location, out cached))
+                            {
+                                icon = new Bitmap(this.Settings.AheadLosingTimeIcon.Location);
+                                GradedIcons.Add(this.Settings.AheadLosingTimeIcon.Location, icon);
+                            }
+                            else
+                            {
+                                icon = cached;
+                            }
+                        }
+                        else if (iconToUse == SplitState.BehindGaining)
+                        {
+                            Image cached;
+                            if (!GradedIcons.TryGetValue(this.Settings.BehindGainingTimeIcon.Location, out cached))
+                            {
+                                icon = new Bitmap(this.Settings.BehindGainingTimeIcon.Location);
+                                GradedIcons.Add(this.Settings.BehindGainingTimeIcon.Location, icon);
+                            }
+                            else
+                            {
+                                icon = cached;
+                            }
+                        }
+                        else if (iconToUse == SplitState.BehindLosing)
+                        {
+                            Image cached;
+                            if (!GradedIcons.TryGetValue(this.Settings.BehindLosingTimeIcon.Location, out cached))
+                            {
+                                icon = new Bitmap(this.Settings.BehindLosingTimeIcon.Location);
+                                GradedIcons.Add(this.Settings.BehindLosingTimeIcon.Location, icon);
+                            }
+                            else
+                            {
+                                icon = cached;
+                            }
+                        }
+
+                    }
+                }
+
+
+
                 if (DisplayIcon && icon != null)
                 {
                     var shadow = ShadowImage;
@@ -230,9 +454,9 @@ namespace LiveSplit.UI.Components
                         var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
 
                         var labelWidth = 0f;
-                        if (column.Type == ColumnType.DeltaorSplitTime || column.Type == ColumnType.SegmentDeltaorSegmentTime)
+                        if (column.Type == GradedColumnType.DeltaorSplitTime || column.Type == GradedColumnType.SegmentDeltaorSegmentTime)
                             labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
-                        else if (column.Type == ColumnType.Delta || column.Type == ColumnType.SegmentDelta)
+                        else if (column.Type == GradedColumnType.Delta || column.Type == GradedColumnType.SegmentDelta)
                             labelWidth = MeasureDeltaLabel.ActualWidth;
                         else
                             labelWidth = MeasureTimeLabel.ActualWidth;
@@ -352,7 +576,7 @@ namespace LiveSplit.UI.Components
             }
         }
 
-        protected void UpdateColumn(LiveSplitState state, SimpleLabel label, ColumnData data)
+        protected void UpdateColumn(LiveSplitState state, SimpleLabel label, GradedColumnData data)
         {
             var comparison = data.Comparison == "Current Comparison" ? state.CurrentComparison : data.Comparison;
             if (!state.Run.Comparisons.Contains(comparison))
@@ -369,11 +593,11 @@ namespace LiveSplit.UI.Components
             var splitIndex = state.Run.IndexOf(Split);
             if (splitIndex < state.CurrentSplitIndex)
             {
-                if (type == ColumnType.SplitTime || type == ColumnType.SegmentTime)
+                if (type == GradedColumnType.SplitTime || type == GradedColumnType.SegmentTime)
                 {
                     label.ForeColor = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
 
-                    if (type == ColumnType.SplitTime)
+                    if (type == GradedColumnType.SplitTime)
                     {
                         label.Text = TimeFormatter.Format(Split.SplitTime[timingMethod]);
                     }
@@ -384,7 +608,7 @@ namespace LiveSplit.UI.Components
                     }
                 }
 
-                if (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta)
+                if (type == GradedColumnType.DeltaorSplitTime || type == GradedColumnType.Delta)
                 {
                     var deltaTime = Split.SplitTime[timingMethod] - Split.Comparisons[comparison][timingMethod];
                     var color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, splitIndex, true, true, comparison, timingMethod);
@@ -392,7 +616,7 @@ namespace LiveSplit.UI.Components
                         color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
                     label.ForeColor = color.Value;
 
-                    if (type == ColumnType.DeltaorSplitTime)
+                    if (type == GradedColumnType.DeltaorSplitTime)
                     {
                         if (deltaTime != null)
                             label.Text = DeltaTimeFormatter.Format(deltaTime);
@@ -400,11 +624,11 @@ namespace LiveSplit.UI.Components
                             label.Text = TimeFormatter.Format(Split.SplitTime[timingMethod]);
                     }
 
-                    else if (type == ColumnType.Delta)
+                    else if (type == GradedColumnType.Delta)
                         label.Text = DeltaTimeFormatter.Format(deltaTime);
                 }
 
-                else if (type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta)
+                else if (type == GradedColumnType.SegmentDeltaorSegmentTime || type == GradedColumnType.SegmentDelta)
                 {
                     var segmentDelta = LiveSplitStateHelper.GetPreviousSegmentDelta(state, splitIndex, comparison, timingMethod);
                     var color = LiveSplitStateHelper.GetSplitColor(state, segmentDelta, splitIndex, false, true, comparison, timingMethod);
@@ -412,14 +636,14 @@ namespace LiveSplit.UI.Components
                         color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
                     label.ForeColor = color.Value;
 
-                    if (type == ColumnType.SegmentDeltaorSegmentTime)
+                    if (type == GradedColumnType.SegmentDeltaorSegmentTime)
                     {
                         if (segmentDelta != null)
                             label.Text = DeltaTimeFormatter.Format(segmentDelta);
                         else
                             label.Text = TimeFormatter.Format(LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, timingMethod));
                     }
-                    else if (type == ColumnType.SegmentDelta)
+                    else if (type == GradedColumnType.SegmentDelta)
                     {
                         label.Text = DeltaTimeFormatter.Format(segmentDelta);
                     }
@@ -427,14 +651,14 @@ namespace LiveSplit.UI.Components
             }
             else
             {
-                if (type == ColumnType.SplitTime || type == ColumnType.SegmentTime || type == ColumnType.DeltaorSplitTime || type == ColumnType.SegmentDeltaorSegmentTime)
+                if (type == GradedColumnType.SplitTime || type == GradedColumnType.SegmentTime || type == GradedColumnType.DeltaorSplitTime || type == GradedColumnType.SegmentDeltaorSegmentTime)
                 {
                     if (Split == state.CurrentSplit)
                         label.ForeColor = Settings.OverrideTimesColor ? Settings.CurrentTimesColor : state.LayoutSettings.TextColor;
                     else
                         label.ForeColor = Settings.OverrideTimesColor ? Settings.AfterTimesColor : state.LayoutSettings.TextColor;
 
-                    if (type == ColumnType.SplitTime || type == ColumnType.DeltaorSplitTime)
+                    if (type == GradedColumnType.SplitTime || type == GradedColumnType.DeltaorSplitTime)
                     {
                         label.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod]);
                     }
@@ -455,15 +679,15 @@ namespace LiveSplit.UI.Components
                 }
 
                 //Live Delta
-                var splitDelta = type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta;
+                var splitDelta = type == GradedColumnType.DeltaorSplitTime || type == GradedColumnType.Delta;
                 var bestDelta = LiveSplitStateHelper.CheckLiveDelta(state, splitDelta, comparison, timingMethod);
                 if (bestDelta != null && Split == state.CurrentSplit &&
-                    (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta || type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta))
+                    (type == GradedColumnType.DeltaorSplitTime || type == GradedColumnType.Delta || type == GradedColumnType.SegmentDeltaorSegmentTime || type == GradedColumnType.SegmentDelta))
                 {
                     label.Text = DeltaTimeFormatter.Format(bestDelta);
                     label.ForeColor = Settings.OverrideDeltasColor ? Settings.DeltasColor : state.LayoutSettings.TextColor;
                 }
-                else if (type == ColumnType.Delta || type == ColumnType.SegmentDelta)
+                else if (type == GradedColumnType.Delta || type == GradedColumnType.SegmentDelta)
                 {
                     label.Text = "";
                 }
@@ -474,9 +698,9 @@ namespace LiveSplit.UI.Components
         {
             if (ColumnsList != null)
             {
-                var mixedCount = ColumnsList.Count(x => x.Type == ColumnType.DeltaorSplitTime || x.Type == ColumnType.SegmentDeltaorSegmentTime);
-                var deltaCount = ColumnsList.Count(x => x.Type == ColumnType.Delta || x.Type == ColumnType.SegmentDelta);
-                var timeCount = ColumnsList.Count(x => x.Type == ColumnType.SplitTime || x.Type == ColumnType.SegmentTime);
+                var mixedCount = ColumnsList.Count(x => x.Type == GradedColumnType.DeltaorSplitTime || x.Type == GradedColumnType.SegmentDeltaorSegmentTime);
+                var deltaCount = ColumnsList.Count(x => x.Type == GradedColumnType.Delta || x.Type == GradedColumnType.SegmentDelta);
+                var timeCount = ColumnsList.Count(x => x.Type == GradedColumnType.SplitTime || x.Type == GradedColumnType.SegmentTime);
                 return mixedCount * (Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth) + 5)
                     + deltaCount * (MeasureDeltaLabel.ActualWidth + 5)
                     + timeCount * (MeasureTimeLabel.ActualWidth + 5);
@@ -539,6 +763,53 @@ namespace LiveSplit.UI.Components
 
         public void Dispose()
         {
+        }
+
+        private SplitState GetSplitState(
+            LiveSplitState state, 
+            TimeSpan? timeDifference, 
+            int splitNumber, 
+            string comparison, 
+            TimingMethod method)
+        {
+            SplitState splitState = SplitState.Unknown;
+            if (splitNumber < 0)
+                return splitState;
+
+            if (timeDifference != null)
+            {
+                if (timeDifference < TimeSpan.Zero)
+                {
+                    splitState = SplitState.AheadGaining;
+                    var lastDelta = LiveSplitStateHelper.GetLastDelta(state, splitNumber - 1, comparison, method);
+                    if (splitNumber > 0 && lastDelta != null && timeDifference > lastDelta)
+                        splitState = SplitState.AheadLosing;
+                }
+                else
+                {
+                    splitState = SplitState.BehindLosing;
+                    var lastDelta = LiveSplitStateHelper.GetLastDelta(state, splitNumber - 1, comparison, method);
+                    if (splitNumber > 0 && lastDelta != null && timeDifference < lastDelta)
+                        splitState = SplitState.BehindGaining;
+                }
+            }
+
+            if (LiveSplitStateHelper.CheckBestSegment(state, splitNumber, method))
+            {
+                splitState = SplitState.BestSegment;
+            }
+
+            return splitState;
+        }
+
+        private enum SplitState
+        {
+            Unknown,
+            BestSegment,
+            AheadGaining,
+            AheadLosing,
+            BehindGaining,
+            BehindLosing
         }
     }
 }
