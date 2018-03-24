@@ -20,3 +20,61 @@ Split Settings:
 Recommended Settings:
 ![alt text](https://i.imgur.com/qiJaYDp.png)
 
+## Installation/Setup
+
+1. Unzip
+2. Copy LiveSplit.GradedSplits.dll into the Components folder in the LiveSplit folder. 
+3. Run LiveSplit.exe
+4. Right-Click -> Edit Layout.
+5. Click the + -> List -> Graded Splits
+
+## Importing Settings from your Splits
+
+1. Make a copy of your layout.
+2. In your layout, add Graded Splits. KEEP the original Split component in the layout. 
+3. Save the layout and exit the LiveSplit.
+4. With a text editor, open your layout file (MyLayoutFileName.lsl)
+5. Find this section, then copy everything in that section, starting from:
+```
+    <Component>
+      <Path>LiveSplit.Splits.dll</Path>
+      <Settings>
+           <Version>1.6</Version>
+           
+           COPY FROM HERE
+           <CurrentSplitTopColor>FFB601A5</CurrentSplitTopColor>
+           
+           ... Lots of stuff...
+           
+            </Columns>
+            TO HERE
+            
+      </Settings>
+    </Component>
+```
+
+6. Find this section, then delete everything in the section starting from:
+```
+    <Component>
+      <Path>LiveSplit.GradedSplits.dll</Path>
+      <Settings>
+        <Version>1.6</Version>
+        
+        DELETE FROM HERE
+        <CurrentSplitTopColor>FFB601A5</CurrentSplitTopColor>
+          ... Lots of stuff ...
+          
+        </Columns>
+        TO HERE
+        
+        <GradedIcons>
+             ... Lots off stuff ...
+        </GradedIcons>
+      </Settings>
+    </Component>
+```
+7. Paste the content you copied there. 
+8. Save your changes. 
+9. Open up LiveSplit again. Your layout should have 2 sets of splits. 
+10. Remove the original split component from your splits.
+
