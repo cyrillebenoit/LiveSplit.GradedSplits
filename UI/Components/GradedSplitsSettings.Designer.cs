@@ -109,11 +109,7 @@
             this.IconApplicationState_Radio_CurrentRun = new System.Windows.Forms.RadioButton();
             this.IconApplicationState_Radio_Disabled = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
-            this.Radio_BehindLosing_UsePercent = new System.Windows.Forms.RadioButton();
-            this.Radio_BehindLosing_UseDefault = new System.Windows.Forms.RadioButton();
-            this.Radio_BehindLosing_Disable = new System.Windows.Forms.RadioButton();
-            this.BehindLosing_Percent = new System.Windows.Forms.NumericUpDown();
+            this.SkippedSplitIconButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.Radio_AheadLosing_UsePercent = new System.Windows.Forms.RadioButton();
             this.Radio_AheadLosing_UseDefault = new System.Windows.Forms.RadioButton();
@@ -139,6 +135,14 @@
             this.Radio_BehindGaining_UseDefault = new System.Windows.Forms.RadioButton();
             this.Radio_BehindGaining_Disable = new System.Windows.Forms.RadioButton();
             this.BehindGaining_Percent = new System.Windows.Forms.NumericUpDown();
+            this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
+            this.Radio_SkippedSplit_Use = new System.Windows.Forms.RadioButton();
+            this.Radio_SkippedSplit_Disable = new System.Windows.Forms.RadioButton();
+            this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
+            this.Radio_BehindLosing_UsePercent = new System.Windows.Forms.RadioButton();
+            this.Radio_BehindLosing_UseDefault = new System.Windows.Forms.RadioButton();
+            this.Radio_BehindLosing_Disable = new System.Windows.Forms.RadioButton();
+            this.BehindLosing_Percent = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.trkSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dmnUpcomingSegments)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dmnTotalSegments)).BeginInit();
@@ -167,8 +171,6 @@
             this.groupBox10.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
-            this.tableLayoutPanel16.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BehindLosing_Percent)).BeginInit();
             this.tableLayoutPanel14.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AheadLosing_Percent)).BeginInit();
             this.tableLayoutPanel13.SuspendLayout();
@@ -177,6 +179,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.BestSeg_Percent)).BeginInit();
             this.tableLayoutPanel15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BehindGaining_Percent)).BeginInit();
+            this.tableLayoutPanel16.SuspendLayout();
+            this.tableLayoutPanel17.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BehindLosing_Percent)).BeginInit();
             this.SuspendLayout();
             // 
             // chkDisplayRows
@@ -495,11 +500,11 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 260F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 294F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 187F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 215F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(445, 1246);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(445, 1280);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox3
@@ -585,7 +590,7 @@
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox4, 4);
             this.groupBox4.Controls.Add(this.tableLayoutPanel5);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(3, 959);
+            this.groupBox4.Location = new System.Drawing.Point(3, 993);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(439, 209);
             this.groupBox4.TabIndex = 20;
@@ -795,7 +800,7 @@
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox6, 4);
             this.groupBox6.Controls.Add(this.tableLayoutPanel7);
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox6.Location = new System.Drawing.Point(3, 772);
+            this.groupBox6.Location = new System.Drawing.Point(3, 806);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(439, 181);
             this.groupBox6.TabIndex = 19;
@@ -967,7 +972,7 @@
             this.groupColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.groupColumns, 4);
             this.groupColumns.Controls.Add(this.tableColumns);
-            this.groupColumns.Location = new System.Drawing.Point(3, 1177);
+            this.groupColumns.Location = new System.Drawing.Point(3, 1211);
             this.groupColumns.Name = "groupColumns";
             this.groupColumns.Size = new System.Drawing.Size(439, 62);
             this.groupColumns.TabIndex = 21;
@@ -989,7 +994,7 @@
             this.tableColumns.Location = new System.Drawing.Point(3, 16);
             this.tableColumns.Name = "tableColumns";
             this.tableColumns.RowCount = 1;
-            this.tableColumns.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.tableColumns.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 43F));
             this.tableColumns.Size = new System.Drawing.Size(433, 43);
             this.tableColumns.TabIndex = 0;
             // 
@@ -1200,7 +1205,7 @@
             this.groupBox10.Controls.Add(this.tableLayoutPanel11);
             this.groupBox10.Location = new System.Drawing.Point(3, 512);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(439, 254);
+            this.groupBox10.Size = new System.Drawing.Size(439, 288);
             this.groupBox10.TabIndex = 29;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Graded Icons";
@@ -1271,9 +1276,7 @@
             this.tableLayoutPanel11.ColumnCount = 2;
             this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel16, 1, 4);
+            this.tableLayoutPanel11.Controls.Add(this.SkippedSplitIconButton, 0, 5);
             this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel14, 1, 2);
             this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel13, 1, 1);
             this.tableLayoutPanel11.Controls.Add(this.AheadGainingIconButton, 0, 1);
@@ -1283,95 +1286,29 @@
             this.tableLayoutPanel11.Controls.Add(this.BestSegmentIconButton, 0, 0);
             this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel12, 1, 0);
             this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel15, 1, 3);
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(4, 83);
+            this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel16, 0, 5);
+            this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel17, 1, 4);
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(6, 83);
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
-            this.tableLayoutPanel11.RowCount = 5;
+            this.tableLayoutPanel11.RowCount = 6;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(429, 171);
+            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(429, 205);
             this.tableLayoutPanel11.TabIndex = 0;
             // 
-            // tableLayoutPanel16
+            // SkippedSplitIconButton
             // 
-            this.tableLayoutPanel16.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel16.ColumnCount = 4;
-            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 127F));
-            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel16.Controls.Add(this.Radio_BehindLosing_UsePercent, 2, 0);
-            this.tableLayoutPanel16.Controls.Add(this.Radio_BehindLosing_UseDefault, 1, 0);
-            this.tableLayoutPanel16.Controls.Add(this.Radio_BehindLosing_Disable, 0, 0);
-            this.tableLayoutPanel16.Controls.Add(this.BehindLosing_Percent, 3, 0);
-            this.tableLayoutPanel16.Location = new System.Drawing.Point(34, 136);
-            this.tableLayoutPanel16.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel16.Name = "tableLayoutPanel16";
-            this.tableLayoutPanel16.RowCount = 1;
-            this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel16.Size = new System.Drawing.Size(395, 35);
-            this.tableLayoutPanel16.TabIndex = 14;
-            // 
-            // Radio_BehindLosing_UsePercent
-            // 
-            this.Radio_BehindLosing_UsePercent.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.Radio_BehindLosing_UsePercent.AutoSize = true;
-            this.Radio_BehindLosing_UsePercent.Location = new System.Drawing.Point(208, 9);
-            this.Radio_BehindLosing_UsePercent.Name = "Radio_BehindLosing_UsePercent";
-            this.Radio_BehindLosing_UsePercent.Size = new System.Drawing.Size(130, 17);
-            this.Radio_BehindLosing_UsePercent.TabIndex = 0;
-            this.Radio_BehindLosing_UsePercent.Text = "Behind Best Seg By %";
-            this.Radio_BehindLosing_UsePercent.UseVisualStyleBackColor = true;
-            this.Radio_BehindLosing_UsePercent.CheckedChanged += new System.EventHandler(this.Radio_BehindLosing_UsePercent_CheckedChanged);
-            // 
-            // Radio_BehindLosing_UseDefault
-            // 
-            this.Radio_BehindLosing_UseDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.Radio_BehindLosing_UseDefault.AutoSize = true;
-            this.Radio_BehindLosing_UseDefault.Location = new System.Drawing.Point(81, 9);
-            this.Radio_BehindLosing_UseDefault.Name = "Radio_BehindLosing_UseDefault";
-            this.Radio_BehindLosing_UseDefault.Size = new System.Drawing.Size(121, 17);
-            this.Radio_BehindLosing_UseDefault.TabIndex = 1;
-            this.Radio_BehindLosing_UseDefault.Text = "On Behind (Losing)";
-            this.Radio_BehindLosing_UseDefault.UseVisualStyleBackColor = true;
-            this.Radio_BehindLosing_UseDefault.CheckedChanged += new System.EventHandler(this.Radio_BehindLosing_UseDefault_CheckedChanged);
-            // 
-            // Radio_BehindLosing_Disable
-            // 
-            this.Radio_BehindLosing_Disable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.Radio_BehindLosing_Disable.AutoSize = true;
-            this.Radio_BehindLosing_Disable.Checked = true;
-            this.Radio_BehindLosing_Disable.Location = new System.Drawing.Point(3, 9);
-            this.Radio_BehindLosing_Disable.Name = "Radio_BehindLosing_Disable";
-            this.Radio_BehindLosing_Disable.Size = new System.Drawing.Size(72, 17);
-            this.Radio_BehindLosing_Disable.TabIndex = 2;
-            this.Radio_BehindLosing_Disable.TabStop = true;
-            this.Radio_BehindLosing_Disable.Text = "Don\'t Use";
-            this.Radio_BehindLosing_Disable.UseVisualStyleBackColor = true;
-            this.Radio_BehindLosing_Disable.CheckedChanged += new System.EventHandler(this.Radio_BehindLosing_Disable_CheckedChanged);
-            // 
-            // BehindLosing_Percent
-            // 
-            this.BehindLosing_Percent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.BehindLosing_Percent.Location = new System.Drawing.Point(344, 7);
-            this.BehindLosing_Percent.Maximum = new decimal(new int[] {
-            9999,
-            0,
-            0,
-            0});
-            this.BehindLosing_Percent.Name = "BehindLosing_Percent";
-            this.BehindLosing_Percent.Size = new System.Drawing.Size(48, 20);
-            this.BehindLosing_Percent.TabIndex = 3;
-            this.BehindLosing_Percent.Value = new decimal(new int[] {
-            9999,
-            0,
-            0,
-            0});
-            this.BehindLosing_Percent.ValueChanged += new System.EventHandler(this.BehindLosing_Percent_ValueChanged);
+            this.SkippedSplitIconButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.SkippedSplitIconButton.Location = new System.Drawing.Point(3, 173);
+            this.SkippedSplitIconButton.Name = "SkippedSplitIconButton";
+            this.SkippedSplitIconButton.Size = new System.Drawing.Size(28, 28);
+            this.SkippedSplitIconButton.TabIndex = 15;
+            this.SkippedSplitIconButton.UseVisualStyleBackColor = true;
+            this.SkippedSplitIconButton.Click += new System.EventHandler(this.SkippedSplitIconButton_Click);
             // 
             // tableLayoutPanel14
             // 
@@ -1399,11 +1336,11 @@
             // 
             this.Radio_AheadLosing_UsePercent.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.Radio_AheadLosing_UsePercent.AutoSize = true;
-            this.Radio_AheadLosing_UsePercent.Location = new System.Drawing.Point(208, 8);
+            this.Radio_AheadLosing_UsePercent.Location = new System.Drawing.Point(196, 8);
             this.Radio_AheadLosing_UsePercent.Name = "Radio_AheadLosing_UsePercent";
-            this.Radio_AheadLosing_UsePercent.Size = new System.Drawing.Size(130, 17);
+            this.Radio_AheadLosing_UsePercent.Size = new System.Drawing.Size(124, 17);
             this.Radio_AheadLosing_UsePercent.TabIndex = 0;
-            this.Radio_AheadLosing_UsePercent.Text = "Behind Best Seg By %";
+            this.Radio_AheadLosing_UsePercent.Text = "Within % of Best Seg";
             this.Radio_AheadLosing_UsePercent.UseVisualStyleBackColor = true;
             this.Radio_AheadLosing_UsePercent.CheckedChanged += new System.EventHandler(this.Radio_AheadLosing_UsePercent_CheckedChanged);
             // 
@@ -1411,7 +1348,7 @@
             // 
             this.Radio_AheadLosing_UseDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.Radio_AheadLosing_UseDefault.AutoSize = true;
-            this.Radio_AheadLosing_UseDefault.Location = new System.Drawing.Point(81, 8);
+            this.Radio_AheadLosing_UseDefault.Location = new System.Drawing.Point(69, 8);
             this.Radio_AheadLosing_UseDefault.Name = "Radio_AheadLosing_UseDefault";
             this.Radio_AheadLosing_UseDefault.Size = new System.Drawing.Size(121, 17);
             this.Radio_AheadLosing_UseDefault.TabIndex = 1;
@@ -1426,24 +1363,30 @@
             this.Radio_AheadLosing_Disable.Checked = true;
             this.Radio_AheadLosing_Disable.Location = new System.Drawing.Point(3, 8);
             this.Radio_AheadLosing_Disable.Name = "Radio_AheadLosing_Disable";
-            this.Radio_AheadLosing_Disable.Size = new System.Drawing.Size(72, 17);
+            this.Radio_AheadLosing_Disable.Size = new System.Drawing.Size(60, 17);
             this.Radio_AheadLosing_Disable.TabIndex = 2;
             this.Radio_AheadLosing_Disable.TabStop = true;
-            this.Radio_AheadLosing_Disable.Text = "Don\'t Use";
+            this.Radio_AheadLosing_Disable.Text = "Disable";
             this.Radio_AheadLosing_Disable.UseVisualStyleBackColor = true;
             this.Radio_AheadLosing_Disable.CheckedChanged += new System.EventHandler(this.Radio_AheadLosing_Disable_CheckedChanged);
             // 
             // AheadLosing_Percent
             // 
             this.AheadLosing_Percent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.AheadLosing_Percent.Location = new System.Drawing.Point(344, 7);
+            this.AheadLosing_Percent.DecimalPlaces = 3;
+            this.AheadLosing_Percent.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.AheadLosing_Percent.Location = new System.Drawing.Point(326, 7);
             this.AheadLosing_Percent.Maximum = new decimal(new int[] {
-            9999,
+            99999,
             0,
             0,
             0});
             this.AheadLosing_Percent.Name = "AheadLosing_Percent";
-            this.AheadLosing_Percent.Size = new System.Drawing.Size(48, 20);
+            this.AheadLosing_Percent.Size = new System.Drawing.Size(66, 20);
             this.AheadLosing_Percent.TabIndex = 3;
             this.AheadLosing_Percent.Value = new decimal(new int[] {
             15,
@@ -1478,11 +1421,11 @@
             // 
             this.Radio_AheadGaining_UsePercent.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.Radio_AheadGaining_UsePercent.AutoSize = true;
-            this.Radio_AheadGaining_UsePercent.Location = new System.Drawing.Point(208, 8);
+            this.Radio_AheadGaining_UsePercent.Location = new System.Drawing.Point(196, 8);
             this.Radio_AheadGaining_UsePercent.Name = "Radio_AheadGaining_UsePercent";
-            this.Radio_AheadGaining_UsePercent.Size = new System.Drawing.Size(130, 17);
+            this.Radio_AheadGaining_UsePercent.Size = new System.Drawing.Size(124, 17);
             this.Radio_AheadGaining_UsePercent.TabIndex = 0;
-            this.Radio_AheadGaining_UsePercent.Text = "Behind Best Seg By %";
+            this.Radio_AheadGaining_UsePercent.Text = "Within % of Best Seg";
             this.Radio_AheadGaining_UsePercent.UseVisualStyleBackColor = true;
             this.Radio_AheadGaining_UsePercent.CheckedChanged += new System.EventHandler(this.Radio_AheadGaining_UsePercent_CheckedChanged);
             // 
@@ -1490,7 +1433,7 @@
             // 
             this.Radio_AheadGaining_UseDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.Radio_AheadGaining_UseDefault.AutoSize = true;
-            this.Radio_AheadGaining_UseDefault.Location = new System.Drawing.Point(81, 8);
+            this.Radio_AheadGaining_UseDefault.Location = new System.Drawing.Point(69, 8);
             this.Radio_AheadGaining_UseDefault.Name = "Radio_AheadGaining_UseDefault";
             this.Radio_AheadGaining_UseDefault.Size = new System.Drawing.Size(121, 17);
             this.Radio_AheadGaining_UseDefault.TabIndex = 1;
@@ -1505,24 +1448,30 @@
             this.Radio_AheadGaining_Disable.Checked = true;
             this.Radio_AheadGaining_Disable.Location = new System.Drawing.Point(3, 8);
             this.Radio_AheadGaining_Disable.Name = "Radio_AheadGaining_Disable";
-            this.Radio_AheadGaining_Disable.Size = new System.Drawing.Size(72, 17);
+            this.Radio_AheadGaining_Disable.Size = new System.Drawing.Size(60, 17);
             this.Radio_AheadGaining_Disable.TabIndex = 2;
             this.Radio_AheadGaining_Disable.TabStop = true;
-            this.Radio_AheadGaining_Disable.Text = "Don\'t Use";
+            this.Radio_AheadGaining_Disable.Text = "Disable";
             this.Radio_AheadGaining_Disable.UseVisualStyleBackColor = true;
             this.Radio_AheadGaining_Disable.CheckedChanged += new System.EventHandler(this.Radio_AheadGaining_Disable_CheckedChanged);
             // 
             // AheadGaining_Percent
             // 
             this.AheadGaining_Percent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.AheadGaining_Percent.Location = new System.Drawing.Point(344, 7);
+            this.AheadGaining_Percent.DecimalPlaces = 3;
+            this.AheadGaining_Percent.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.AheadGaining_Percent.Location = new System.Drawing.Point(326, 7);
             this.AheadGaining_Percent.Maximum = new decimal(new int[] {
-            9999,
+            99999,
             0,
             0,
             0});
             this.AheadGaining_Percent.Name = "AheadGaining_Percent";
-            this.AheadGaining_Percent.Size = new System.Drawing.Size(48, 20);
+            this.AheadGaining_Percent.Size = new System.Drawing.Size(66, 20);
             this.AheadGaining_Percent.TabIndex = 3;
             this.AheadGaining_Percent.Value = new decimal(new int[] {
             10,
@@ -1607,14 +1556,20 @@
             // BestSeg_Percent
             // 
             this.BestSeg_Percent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.BestSeg_Percent.Location = new System.Drawing.Point(344, 7);
+            this.BestSeg_Percent.DecimalPlaces = 3;
+            this.BestSeg_Percent.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.BestSeg_Percent.Location = new System.Drawing.Point(326, 7);
             this.BestSeg_Percent.Maximum = new decimal(new int[] {
-            9999,
+            99999,
             0,
             0,
             0});
             this.BestSeg_Percent.Name = "BestSeg_Percent";
-            this.BestSeg_Percent.Size = new System.Drawing.Size(48, 20);
+            this.BestSeg_Percent.Size = new System.Drawing.Size(66, 20);
             this.BestSeg_Percent.TabIndex = 4;
             this.BestSeg_Percent.Value = new decimal(new int[] {
             5,
@@ -1627,11 +1582,11 @@
             // 
             this.Radio_BestSeg_UsePercent.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.Radio_BestSeg_UsePercent.AutoSize = true;
-            this.Radio_BestSeg_UsePercent.Location = new System.Drawing.Point(208, 8);
+            this.Radio_BestSeg_UsePercent.Location = new System.Drawing.Point(196, 8);
             this.Radio_BestSeg_UsePercent.Name = "Radio_BestSeg_UsePercent";
-            this.Radio_BestSeg_UsePercent.Size = new System.Drawing.Size(130, 17);
+            this.Radio_BestSeg_UsePercent.Size = new System.Drawing.Size(124, 17);
             this.Radio_BestSeg_UsePercent.TabIndex = 3;
-            this.Radio_BestSeg_UsePercent.Text = "Behind Best Seg By %";
+            this.Radio_BestSeg_UsePercent.Text = "Within % of Best Seg";
             this.Radio_BestSeg_UsePercent.UseVisualStyleBackColor = true;
             this.Radio_BestSeg_UsePercent.CheckedChanged += new System.EventHandler(this.Radio_BestSeg_UsePercent_CheckedChanged);
             // 
@@ -1639,11 +1594,11 @@
             // 
             this.Radio_BestSeg_UseDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.Radio_BestSeg_UseDefault.AutoSize = true;
-            this.Radio_BestSeg_UseDefault.Location = new System.Drawing.Point(81, 8);
+            this.Radio_BestSeg_UseDefault.Location = new System.Drawing.Point(69, 8);
             this.Radio_BestSeg_UseDefault.Name = "Radio_BestSeg_UseDefault";
             this.Radio_BestSeg_UseDefault.Size = new System.Drawing.Size(121, 17);
             this.Radio_BestSeg_UseDefault.TabIndex = 1;
-            this.Radio_BestSeg_UseDefault.Text = "Show on Best Seg.";
+            this.Radio_BestSeg_UseDefault.Text = "Show on Best Seg";
             this.Radio_BestSeg_UseDefault.UseVisualStyleBackColor = true;
             this.Radio_BestSeg_UseDefault.CheckedChanged += new System.EventHandler(this.Radio_BestSeg_UseDefault_CheckedChanged);
             // 
@@ -1654,10 +1609,10 @@
             this.Radio_BestSeg_Disable.Checked = true;
             this.Radio_BestSeg_Disable.Location = new System.Drawing.Point(3, 8);
             this.Radio_BestSeg_Disable.Name = "Radio_BestSeg_Disable";
-            this.Radio_BestSeg_Disable.Size = new System.Drawing.Size(72, 17);
+            this.Radio_BestSeg_Disable.Size = new System.Drawing.Size(60, 17);
             this.Radio_BestSeg_Disable.TabIndex = 2;
             this.Radio_BestSeg_Disable.TabStop = true;
-            this.Radio_BestSeg_Disable.Text = "Don\'t Use";
+            this.Radio_BestSeg_Disable.Text = "Disable";
             this.Radio_BestSeg_Disable.UseVisualStyleBackColor = true;
             this.Radio_BestSeg_Disable.CheckedChanged += new System.EventHandler(this.Radio_BestSeg_Disable_CheckedChanged);
             // 
@@ -1687,11 +1642,11 @@
             // 
             this.Radio_BehindGaining_UsePercent.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.Radio_BehindGaining_UsePercent.AutoSize = true;
-            this.Radio_BehindGaining_UsePercent.Location = new System.Drawing.Point(208, 8);
+            this.Radio_BehindGaining_UsePercent.Location = new System.Drawing.Point(196, 8);
             this.Radio_BehindGaining_UsePercent.Name = "Radio_BehindGaining_UsePercent";
-            this.Radio_BehindGaining_UsePercent.Size = new System.Drawing.Size(130, 17);
+            this.Radio_BehindGaining_UsePercent.Size = new System.Drawing.Size(124, 17);
             this.Radio_BehindGaining_UsePercent.TabIndex = 0;
-            this.Radio_BehindGaining_UsePercent.Text = "Behind Best Seg By %";
+            this.Radio_BehindGaining_UsePercent.Text = "Within % of Best Seg";
             this.Radio_BehindGaining_UsePercent.UseVisualStyleBackColor = true;
             this.Radio_BehindGaining_UsePercent.CheckedChanged += new System.EventHandler(this.Radio_BehindGaining_UsePercent_CheckedChanged);
             // 
@@ -1699,7 +1654,7 @@
             // 
             this.Radio_BehindGaining_UseDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.Radio_BehindGaining_UseDefault.AutoSize = true;
-            this.Radio_BehindGaining_UseDefault.Location = new System.Drawing.Point(81, 8);
+            this.Radio_BehindGaining_UseDefault.Location = new System.Drawing.Point(69, 8);
             this.Radio_BehindGaining_UseDefault.Name = "Radio_BehindGaining_UseDefault";
             this.Radio_BehindGaining_UseDefault.Size = new System.Drawing.Size(121, 17);
             this.Radio_BehindGaining_UseDefault.TabIndex = 1;
@@ -1714,24 +1669,30 @@
             this.Radio_BehindGaining_Disable.Checked = true;
             this.Radio_BehindGaining_Disable.Location = new System.Drawing.Point(3, 8);
             this.Radio_BehindGaining_Disable.Name = "Radio_BehindGaining_Disable";
-            this.Radio_BehindGaining_Disable.Size = new System.Drawing.Size(72, 17);
+            this.Radio_BehindGaining_Disable.Size = new System.Drawing.Size(60, 17);
             this.Radio_BehindGaining_Disable.TabIndex = 2;
             this.Radio_BehindGaining_Disable.TabStop = true;
-            this.Radio_BehindGaining_Disable.Text = "Don\'t Use";
+            this.Radio_BehindGaining_Disable.Text = "Disable";
             this.Radio_BehindGaining_Disable.UseVisualStyleBackColor = true;
             this.Radio_BehindGaining_Disable.CheckedChanged += new System.EventHandler(this.Radio_BehindGaining_Disable_CheckedChanged);
             // 
             // BehindGaining_Percent
             // 
             this.BehindGaining_Percent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.BehindGaining_Percent.Location = new System.Drawing.Point(344, 7);
+            this.BehindGaining_Percent.DecimalPlaces = 3;
+            this.BehindGaining_Percent.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.BehindGaining_Percent.Location = new System.Drawing.Point(326, 7);
             this.BehindGaining_Percent.Maximum = new decimal(new int[] {
-            9999,
+            99999,
             0,
             0,
             0});
             this.BehindGaining_Percent.Name = "BehindGaining_Percent";
-            this.BehindGaining_Percent.Size = new System.Drawing.Size(48, 20);
+            this.BehindGaining_Percent.Size = new System.Drawing.Size(66, 20);
             this.BehindGaining_Percent.TabIndex = 3;
             this.BehindGaining_Percent.Value = new decimal(new int[] {
             20,
@@ -1740,6 +1701,137 @@
             0});
             this.BehindGaining_Percent.ValueChanged += new System.EventHandler(this.BehindGaining_Percent_ValueChanged);
             // 
+            // tableLayoutPanel16
+            // 
+            this.tableLayoutPanel16.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel16.ColumnCount = 4;
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 127F));
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel16.Controls.Add(this.Radio_SkippedSplit_Use, 1, 0);
+            this.tableLayoutPanel16.Controls.Add(this.Radio_SkippedSplit_Disable, 0, 0);
+            this.tableLayoutPanel16.Location = new System.Drawing.Point(34, 170);
+            this.tableLayoutPanel16.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel16.Name = "tableLayoutPanel16";
+            this.tableLayoutPanel16.RowCount = 1;
+            this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(395, 35);
+            this.tableLayoutPanel16.TabIndex = 14;
+            // 
+            // Radio_SkippedSplit_Use
+            // 
+            this.Radio_SkippedSplit_Use.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.Radio_SkippedSplit_Use.AutoSize = true;
+            this.Radio_SkippedSplit_Use.Location = new System.Drawing.Point(69, 9);
+            this.Radio_SkippedSplit_Use.Name = "Radio_SkippedSplit_Use";
+            this.Radio_SkippedSplit_Use.Size = new System.Drawing.Size(121, 17);
+            this.Radio_SkippedSplit_Use.TabIndex = 1;
+            this.Radio_SkippedSplit_Use.Text = "Skipped Split";
+            this.Radio_SkippedSplit_Use.UseVisualStyleBackColor = true;
+            this.Radio_SkippedSplit_Use.CheckedChanged += new System.EventHandler(this.Radio_SkippedSplit_UseDefault_CheckedChanged);
+            // 
+            // Radio_SkippedSplit_Disable
+            // 
+            this.Radio_SkippedSplit_Disable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.Radio_SkippedSplit_Disable.AutoSize = true;
+            this.Radio_SkippedSplit_Disable.Checked = true;
+            this.Radio_SkippedSplit_Disable.Location = new System.Drawing.Point(3, 9);
+            this.Radio_SkippedSplit_Disable.Name = "Radio_SkippedSplit_Disable";
+            this.Radio_SkippedSplit_Disable.Size = new System.Drawing.Size(60, 17);
+            this.Radio_SkippedSplit_Disable.TabIndex = 2;
+            this.Radio_SkippedSplit_Disable.TabStop = true;
+            this.Radio_SkippedSplit_Disable.Text = "Disable";
+            this.Radio_SkippedSplit_Disable.UseVisualStyleBackColor = true;
+            this.Radio_SkippedSplit_Disable.CheckedChanged += new System.EventHandler(this.Radio_SkippedSplit_Disable_CheckedChanged);
+            // 
+            // tableLayoutPanel17
+            // 
+            this.tableLayoutPanel17.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel17.ColumnCount = 4;
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 127F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel17.Controls.Add(this.Radio_BehindLosing_UsePercent, 2, 0);
+            this.tableLayoutPanel17.Controls.Add(this.Radio_BehindLosing_UseDefault, 1, 0);
+            this.tableLayoutPanel17.Controls.Add(this.Radio_BehindLosing_Disable, 0, 0);
+            this.tableLayoutPanel17.Controls.Add(this.BehindLosing_Percent, 3, 0);
+            this.tableLayoutPanel17.Location = new System.Drawing.Point(34, 136);
+            this.tableLayoutPanel17.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel17.Name = "tableLayoutPanel17";
+            this.tableLayoutPanel17.RowCount = 1;
+            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(395, 34);
+            this.tableLayoutPanel17.TabIndex = 16;
+            // 
+            // Radio_BehindLosing_UsePercent
+            // 
+            this.Radio_BehindLosing_UsePercent.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.Radio_BehindLosing_UsePercent.AutoSize = true;
+            this.Radio_BehindLosing_UsePercent.Location = new System.Drawing.Point(196, 8);
+            this.Radio_BehindLosing_UsePercent.Name = "Radio_BehindLosing_UsePercent";
+            this.Radio_BehindLosing_UsePercent.Size = new System.Drawing.Size(124, 17);
+            this.Radio_BehindLosing_UsePercent.TabIndex = 0;
+            this.Radio_BehindLosing_UsePercent.Text = "Within % of Best Seg";
+            this.Radio_BehindLosing_UsePercent.UseVisualStyleBackColor = true;
+            this.Radio_BehindLosing_UsePercent.CheckedChanged += new System.EventHandler(this.Radio_BehindLosing_UsePercent_CheckedChanged);
+            // 
+            // Radio_BehindLosing_UseDefault
+            // 
+            this.Radio_BehindLosing_UseDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.Radio_BehindLosing_UseDefault.AutoSize = true;
+            this.Radio_BehindLosing_UseDefault.Location = new System.Drawing.Point(69, 8);
+            this.Radio_BehindLosing_UseDefault.Name = "Radio_BehindLosing_UseDefault";
+            this.Radio_BehindLosing_UseDefault.Size = new System.Drawing.Size(121, 17);
+            this.Radio_BehindLosing_UseDefault.TabIndex = 1;
+            this.Radio_BehindLosing_UseDefault.Text = "On Behind (Losing)";
+            this.Radio_BehindLosing_UseDefault.UseVisualStyleBackColor = true;
+            this.Radio_BehindLosing_UseDefault.CheckedChanged += new System.EventHandler(this.Radio_BehindLosing_UseDefault_CheckedChanged);
+            // 
+            // Radio_BehindLosing_Disable
+            // 
+            this.Radio_BehindLosing_Disable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.Radio_BehindLosing_Disable.AutoSize = true;
+            this.Radio_BehindLosing_Disable.Checked = true;
+            this.Radio_BehindLosing_Disable.Location = new System.Drawing.Point(3, 8);
+            this.Radio_BehindLosing_Disable.Name = "Radio_BehindLosing_Disable";
+            this.Radio_BehindLosing_Disable.Size = new System.Drawing.Size(60, 17);
+            this.Radio_BehindLosing_Disable.TabIndex = 2;
+            this.Radio_BehindLosing_Disable.TabStop = true;
+            this.Radio_BehindLosing_Disable.Text = "Disable";
+            this.Radio_BehindLosing_Disable.UseVisualStyleBackColor = true;
+            this.Radio_BehindLosing_Disable.CheckedChanged += new System.EventHandler(this.Radio_BehindLosing_Disable_CheckedChanged);
+            // 
+            // BehindLosing_Percent
+            // 
+            this.BehindLosing_Percent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.BehindLosing_Percent.DecimalPlaces = 3;
+            this.BehindLosing_Percent.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.BehindLosing_Percent.Location = new System.Drawing.Point(326, 7);
+            this.BehindLosing_Percent.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.BehindLosing_Percent.Name = "BehindLosing_Percent";
+            this.BehindLosing_Percent.Size = new System.Drawing.Size(66, 20);
+            this.BehindLosing_Percent.TabIndex = 3;
+            this.BehindLosing_Percent.Value = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.BehindLosing_Percent.ValueChanged += new System.EventHandler(this.BehindLosing_Percent_ValueChanged);
+            // 
             // GradedSplitsSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1747,7 +1839,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "GradedSplitsSettings";
             this.Padding = new System.Windows.Forms.Padding(7);
-            this.Size = new System.Drawing.Size(459, 1260);
+            this.Size = new System.Drawing.Size(459, 1294);
             this.Load += new System.EventHandler(this.SplitsSettings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trkSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dmnUpcomingSegments)).EndInit();
@@ -1787,9 +1879,6 @@
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
             this.tableLayoutPanel11.ResumeLayout(false);
-            this.tableLayoutPanel16.ResumeLayout(false);
-            this.tableLayoutPanel16.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BehindLosing_Percent)).EndInit();
             this.tableLayoutPanel14.ResumeLayout(false);
             this.tableLayoutPanel14.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AheadLosing_Percent)).EndInit();
@@ -1802,6 +1891,11 @@
             this.tableLayoutPanel15.ResumeLayout(false);
             this.tableLayoutPanel15.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BehindGaining_Percent)).EndInit();
+            this.tableLayoutPanel16.ResumeLayout(false);
+            this.tableLayoutPanel16.PerformLayout();
+            this.tableLayoutPanel17.ResumeLayout(false);
+            this.tableLayoutPanel17.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BehindLosing_Percent)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1893,10 +1987,8 @@
         private System.Windows.Forms.RadioButton Radio_BestSeg_UseDefault;
         private System.Windows.Forms.RadioButton Radio_BestSeg_Disable;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
-        private System.Windows.Forms.RadioButton Radio_BehindLosing_UsePercent;
-        private System.Windows.Forms.RadioButton Radio_BehindLosing_UseDefault;
-        private System.Windows.Forms.RadioButton Radio_BehindLosing_Disable;
-        private System.Windows.Forms.NumericUpDown BehindLosing_Percent;
+        private System.Windows.Forms.RadioButton Radio_SkippedSplit_Use;
+        private System.Windows.Forms.RadioButton Radio_SkippedSplit_Disable;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
         private System.Windows.Forms.RadioButton Radio_BehindGaining_UsePercent;
         private System.Windows.Forms.RadioButton Radio_BehindGaining_UseDefault;
@@ -1919,5 +2011,11 @@
         private System.Windows.Forms.RadioButton IconApplicationState_Radio_Comparison;
         private System.Windows.Forms.RadioButton IconApplicationState_Radio_CurrentRun;
         private System.Windows.Forms.RadioButton IconApplicationState_Radio_Disabled;
+        private System.Windows.Forms.Button SkippedSplitIconButton;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel17;
+        private System.Windows.Forms.RadioButton Radio_BehindLosing_UsePercent;
+        private System.Windows.Forms.RadioButton Radio_BehindLosing_UseDefault;
+        private System.Windows.Forms.RadioButton Radio_BehindLosing_Disable;
+        private System.Windows.Forms.NumericUpDown BehindLosing_Percent;
     }
 }

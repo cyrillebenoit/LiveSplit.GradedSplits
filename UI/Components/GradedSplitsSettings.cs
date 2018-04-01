@@ -3,6 +3,7 @@ using LiveSplit.TimeFormatters;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
@@ -91,14 +92,15 @@ namespace LiveSplit.UI.Components
         public GradedIcon AheadLosingTimeIcon { get; set; }
         public GradedIcon BehindGainingTimeIcon { get; set; }
         public GradedIcon BehindLosingTimeIcon { get; set; }
+        public GradedIcon SkippedSplitIcon { get; set; }
 
         public GradedIconsApplicationState GradedIconsApplicationState { get; set; }
 
         public class GradedIcon
         {
-            public string Location { get; set; }
+            public string Base64Bytes { get; set; }
             public GradedIconState IconState { get; set; }
-            public int PercentageBehind { get; set; }
+            public decimal PercentageBehind { get; set; }
         }
 
 
@@ -182,11 +184,12 @@ namespace LiveSplit.UI.Components
             ColumnsList.Add(new GradedColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new GradedColumnData("+/-", GradedColumnType.Delta, "Current Comparison", "Current Timing Method") });
             ColumnsList.Add(new GradedColumnSettings(CurrentState, "Time", ColumnsList) { Data = new GradedColumnData("Time", GradedColumnType.SplitTime, "Current Comparison", "Current Timing Method") });
 
-            this.BestSegmentIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Location = null };
-            this.AheadGainingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Location = null };
-            this.AheadLosingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Location = null };
-            this.BehindGainingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Location = null };
-            this.BehindLosingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Location = null };
+            this.BestSegmentIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Base64Bytes = null };
+            this.AheadGainingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Base64Bytes = null };
+            this.AheadLosingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Base64Bytes = null };
+            this.BehindGainingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Base64Bytes = null };
+            this.BehindLosingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Base64Bytes = null };
+            this.SkippedSplitIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Base64Bytes = null };
             this.GradedIconsApplicationState = GradedIconsApplicationState.Disabled;
         }
 
@@ -463,23 +466,23 @@ namespace LiveSplit.UI.Components
                     continue;
                 }
 
-                var percentage = 0;
-                var iconUrl = "";
+                decimal percentage = 0m;
+                string iconByte64String = null;
                 GradedIconState state = GradedIconState.Disabled;
 
                 foreach (XmlElement innerChild in child.ChildNodes)
                 {
                     if (innerChild.Name == "PercentBehind")
                     {
-                        percentage = SettingsHelper.ParseInt(innerChild);
+                        percentage = Convert.ToDecimal(SettingsHelper.ParseString(innerChild, "0.00"));
                     }
                     else if (innerChild.Name == "State")
                     {
                         state = SettingsHelper.ParseEnum<GradedIconState>(innerChild, GradedIconState.Disabled);
                     }
-                    else if (innerChild.Name == "IconUrl")
+                    else if (innerChild.Name == "Icon")
                     {
-                        iconUrl = innerChild.InnerText;
+                        iconByte64String = innerChild.InnerText;
                     }
                 }
 
@@ -496,7 +499,7 @@ namespace LiveSplit.UI.Components
                     disabled = Radio_BestSeg_Disable;
                     defaultRadio = Radio_BestSeg_UseDefault;
                     usePercentage = Radio_BestSeg_UsePercent;
-                    this.BestSegmentIcon.Location = iconUrl;
+                    this.BestSegmentIcon.Base64Bytes = iconByte64String;
                     this.BestSegmentIcon.IconState = state;
                     this.BestSegmentIcon.PercentageBehind = percentage;
                 }
@@ -507,7 +510,7 @@ namespace LiveSplit.UI.Components
                     disabled = Radio_AheadGaining_Disable;
                     defaultRadio = Radio_AheadGaining_UseDefault;
                     usePercentage = Radio_AheadGaining_UsePercent;
-                    this.AheadGainingTimeIcon.Location = iconUrl;
+                    this.AheadGainingTimeIcon.Base64Bytes = iconByte64String;
                     this.AheadGainingTimeIcon.IconState = state;
                     this.AheadGainingTimeIcon.PercentageBehind = percentage;
                 }
@@ -518,7 +521,7 @@ namespace LiveSplit.UI.Components
                     disabled = Radio_AheadLosing_Disable;
                     defaultRadio = Radio_AheadLosing_UseDefault;
                     usePercentage = Radio_AheadLosing_UsePercent;
-                    this.AheadLosingTimeIcon.Location = iconUrl;
+                    this.AheadLosingTimeIcon.Base64Bytes = iconByte64String;
                     this.AheadLosingTimeIcon.IconState = state;
                     this.AheadLosingTimeIcon.PercentageBehind = percentage;
                 }
@@ -529,7 +532,7 @@ namespace LiveSplit.UI.Components
                     disabled = Radio_BehindGaining_Disable;
                     defaultRadio = Radio_BehindGaining_UseDefault;
                     usePercentage = Radio_BehindGaining_UsePercent;
-                    this.BehindGainingTimeIcon.Location = iconUrl;
+                    this.BehindGainingTimeIcon.Base64Bytes = iconByte64String;
                     this.BehindGainingTimeIcon.IconState = state;
                     this.BehindGainingTimeIcon.PercentageBehind = percentage;
                 }
@@ -540,9 +543,19 @@ namespace LiveSplit.UI.Components
                     disabled = Radio_BehindLosing_Disable;
                     defaultRadio = Radio_BehindLosing_UseDefault;
                     usePercentage = Radio_BehindLosing_UsePercent;
-                    this.BehindLosingTimeIcon.Location = iconUrl;
+                    this.BehindLosingTimeIcon.Base64Bytes = iconByte64String;
                     this.BehindLosingTimeIcon.IconState = state;
                     this.BehindLosingTimeIcon.PercentageBehind = percentage;
+                }
+                else if (child.Name == "SkippedSplit")
+                {
+                    percentageToUpdate = null;
+                    toPlaceIconOn = SkippedSplitIconButton;
+                    disabled = Radio_SkippedSplit_Disable;
+                    defaultRadio = Radio_SkippedSplit_Use;
+                    usePercentage = null;
+                    this.SkippedSplitIcon.Base64Bytes = iconByte64String;
+                    this.SkippedSplitIcon.IconState = state;
                 }
 
                 if (state == GradedIconState.Disabled && disabled != null)
@@ -564,9 +577,9 @@ namespace LiveSplit.UI.Components
                 }
 
 
-                if (toPlaceIconOn != null && !string.IsNullOrWhiteSpace(iconUrl))
+                if (toPlaceIconOn != null && !string.IsNullOrWhiteSpace(iconByte64String))
                 {
-                    placeImageOnButton(toPlaceIconOn, iconUrl);
+                    placeImageOnButton(toPlaceIconOn, Convert.FromBase64String(iconByte64String));
                 }
             }
         }
@@ -670,7 +683,7 @@ namespace LiveSplit.UI.Components
                                                 (this.Radio_BestSeg_UsePercent.Checked ? GradedIconState.PercentageSplit : GradedIconState.Disabled)
                                             ));
                 hashCode ^= SettingsHelper.CreateSetting(document, bestSegElem, "PercentBehind", this.BestSeg_Percent.Value);
-                hashCode ^= SettingsHelper.CreateSetting(document, bestSegElem, "IconUrl", this.BestSegmentIcon.Location);
+                hashCode ^= SettingsHelper.CreateSetting(document, bestSegElem, "Icon", this.BestSegmentIcon.Base64Bytes);
                 hashCode ^= SettingsHelper.CreateSetting(document, bestSegElem, "State", state.ToString());
                 gradedIconsElement.AppendChild(bestSegElem);
 
@@ -680,7 +693,7 @@ namespace LiveSplit.UI.Components
                                                 (this.Radio_AheadGaining_UsePercent.Checked ? GradedIconState.PercentageSplit : GradedIconState.Disabled)
                                             ));
                 hashCode ^= SettingsHelper.CreateSetting(document, aheadGainingElem, "PercentBehind", this.AheadGaining_Percent.Value);
-                hashCode ^= SettingsHelper.CreateSetting(document, aheadGainingElem, "IconUrl", this.AheadGainingTimeIcon.Location);
+                hashCode ^= SettingsHelper.CreateSetting(document, aheadGainingElem, "Icon", this.AheadGainingTimeIcon.Base64Bytes);
                 hashCode ^= SettingsHelper.CreateSetting(document, aheadGainingElem, "State", state.ToString());
                 gradedIconsElement.AppendChild(aheadGainingElem);
 
@@ -690,7 +703,7 @@ namespace LiveSplit.UI.Components
                                                 (this.Radio_AheadLosing_UsePercent.Checked ? GradedIconState.PercentageSplit : GradedIconState.Disabled)
                                             ));
                 hashCode ^= SettingsHelper.CreateSetting(document, aheadLosingElem, "PercentBehind", this.AheadLosing_Percent.Value);
-                hashCode ^= SettingsHelper.CreateSetting(document, aheadLosingElem, "IconUrl", this.AheadLosingTimeIcon.Location);
+                hashCode ^= SettingsHelper.CreateSetting(document, aheadLosingElem, "Icon", this.AheadLosingTimeIcon.Base64Bytes);
                 hashCode ^= SettingsHelper.CreateSetting(document, aheadLosingElem, "State", state.ToString());
                 gradedIconsElement.AppendChild(aheadLosingElem);
 
@@ -700,7 +713,7 @@ namespace LiveSplit.UI.Components
                                                 (this.Radio_BehindGaining_UsePercent.Checked ? GradedIconState.PercentageSplit : GradedIconState.Disabled)
                                             ));
                 hashCode ^= SettingsHelper.CreateSetting(document, behindGainingElem, "PercentBehind", this.BehindGaining_Percent.Value);
-                hashCode ^= SettingsHelper.CreateSetting(document, behindGainingElem, "IconUrl", this.BehindGainingTimeIcon.Location);
+                hashCode ^= SettingsHelper.CreateSetting(document, behindGainingElem, "Icon", this.BehindGainingTimeIcon.Base64Bytes);
                 hashCode ^= SettingsHelper.CreateSetting(document, behindGainingElem, "State", state.ToString());
                 gradedIconsElement.AppendChild(behindGainingElem);
 
@@ -710,9 +723,18 @@ namespace LiveSplit.UI.Components
                                                 (this.Radio_BehindLosing_UsePercent.Checked ? GradedIconState.PercentageSplit : GradedIconState.Disabled)
                                             ));
                 hashCode ^= SettingsHelper.CreateSetting(document, behindLosingElem, "PercentBehind", this.BehindLosing_Percent.Value);
-                hashCode ^= SettingsHelper.CreateSetting(document, behindLosingElem, "IconUrl", this.BehindLosingTimeIcon.Location);
+                hashCode ^= SettingsHelper.CreateSetting(document, behindLosingElem, "Icon", this.BehindLosingTimeIcon.Base64Bytes);
                 hashCode ^= SettingsHelper.CreateSetting(document, behindLosingElem, "State", state.ToString());
                 gradedIconsElement.AppendChild(behindLosingElem);
+
+                var skippedSplitElem = document.CreateElement("SkippedSplit");
+                state = (this.Radio_SkippedSplit_Disable.Checked ? GradedIconState.Disabled :
+                                            (this.Radio_SkippedSplit_Use.Checked ? GradedIconState.Default :
+                                                GradedIconState.Disabled
+                                            ));
+                hashCode ^= SettingsHelper.CreateSetting(document, skippedSplitElem, "Icon", this.SkippedSplitIcon.Base64Bytes);
+                hashCode ^= SettingsHelper.CreateSetting(document, skippedSplitElem, "State", state.ToString());
+                gradedIconsElement.AppendChild(skippedSplitElem);
             }
 
             return hashCode;
@@ -817,27 +839,32 @@ namespace LiveSplit.UI.Components
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.BestSegmentIcon.Location = setImageOnButton((Button)sender);
+            this.BestSegmentIcon.Base64Bytes = setImageOnButton((Button)sender);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.AheadGainingTimeIcon.Location = setImageOnButton((Button)sender);
+            this.AheadGainingTimeIcon.Base64Bytes = setImageOnButton((Button)sender);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            this.AheadLosingTimeIcon.Location = setImageOnButton((Button)sender);
+            this.AheadLosingTimeIcon.Base64Bytes = setImageOnButton((Button)sender);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            this.BehindGainingTimeIcon.Location = setImageOnButton((Button)sender);
+            this.BehindGainingTimeIcon.Base64Bytes = setImageOnButton((Button)sender);
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            this.BehindLosingTimeIcon.Location = setImageOnButton((Button)sender);
+            this.BehindLosingTimeIcon.Base64Bytes = setImageOnButton((Button)sender);
+        }
+
+        private void SkippedSplitIconButton_Click(object sender, EventArgs e)
+        {
+            this.SkippedSplitIcon.Base64Bytes = setImageOnButton((Button)sender);
         }
 
         private string setImageOnButton(Button button)
@@ -855,9 +882,8 @@ namespace LiveSplit.UI.Components
 
                     if (dlg.ShowDialog() == DialogResult.OK)
                     {
-                        var bmp = new Bitmap(dlg.FileName);
-                        placeImageOnButton(button, dlg.FileName);
-                        return dlg.FileName;
+                        var bytes = placeImageOnButton(button, dlg.FileName);
+                        return Convert.ToBase64String(bytes);
                     }
                 }
                 return null;
@@ -869,11 +895,21 @@ namespace LiveSplit.UI.Components
             }
         }
 
-        private void placeImageOnButton(Button button, string location)
+        private byte[] placeImageOnButton(Button button, string location)
         {
             var bmp = new Bitmap(location);
             button.BackgroundImageLayout = ImageLayout.Stretch;
             button.BackgroundImage = bmp;
+            return File.ReadAllBytes(location);
+        }
+
+        private void placeImageOnButton(Button button, byte[] imageBytes)
+        {
+            using (var ms = new MemoryStream(imageBytes))
+            {
+                button.BackgroundImageLayout = ImageLayout.Stretch;
+                button.BackgroundImage = Image.FromStream(ms);
+            }
         }
 
         private void tableLayoutPanel12_Paint(object sender, PaintEventArgs e)
@@ -939,7 +975,7 @@ namespace LiveSplit.UI.Components
 
         private void BestSeg_Percent_ValueChanged(object sender, EventArgs e)
         {
-            this.BestSegmentIcon.PercentageBehind = Convert.ToInt32(((NumericUpDown)sender).Value);
+            this.BestSegmentIcon.PercentageBehind = ((NumericUpDown)sender).Value;
         }
 
         private void Radio_AheadGaining_Disable_CheckedChanged(object sender, EventArgs e)
@@ -968,7 +1004,7 @@ namespace LiveSplit.UI.Components
 
         private void AheadGaining_Percent_ValueChanged(object sender, EventArgs e)
         {
-            this.AheadGainingTimeIcon.PercentageBehind = Convert.ToInt32(((NumericUpDown)sender).Value);
+            this.AheadGainingTimeIcon.PercentageBehind = ((NumericUpDown)sender).Value;
         }
 
         private void Radio_AheadLosing_Disable_CheckedChanged(object sender, EventArgs e)
@@ -997,7 +1033,7 @@ namespace LiveSplit.UI.Components
 
         private void AheadLosing_Percent_ValueChanged(object sender, EventArgs e)
         {
-            this.AheadLosingTimeIcon.PercentageBehind = Convert.ToInt32(((NumericUpDown)sender).Value);
+            this.AheadLosingTimeIcon.PercentageBehind = ((NumericUpDown)sender).Value;
         }
 
         private void Radio_BehindGaining_Disable_CheckedChanged(object sender, EventArgs e)
@@ -1026,16 +1062,10 @@ namespace LiveSplit.UI.Components
 
         private void BehindGaining_Percent_ValueChanged(object sender, EventArgs e)
         {
-            this.BehindGainingTimeIcon.PercentageBehind = Convert.ToInt32(((NumericUpDown)sender).Value);
+            this.BehindGainingTimeIcon.PercentageBehind = ((NumericUpDown)sender).Value;
         }
 
-        private void Radio_BehindLosing_Disable_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((RadioButton)sender).Checked)
-            {
-                this.BehindLosingTimeIcon.IconState = GradedIconState.Disabled;
-            }
-        }
+
 
         private void Radio_BehindLosing_UseDefault_CheckedChanged(object sender, EventArgs e)
         {
@@ -1055,7 +1085,34 @@ namespace LiveSplit.UI.Components
 
         private void BehindLosing_Percent_ValueChanged(object sender, EventArgs e)
         {
-            this.BehindLosingTimeIcon.PercentageBehind = Convert.ToInt32(((NumericUpDown)sender).Value);
+            this.BehindLosingTimeIcon.PercentageBehind = ((NumericUpDown)sender).Value;
+        }
+
+
+
+        private void Radio_BehindLosing_Disable_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.BehindLosingTimeIcon.IconState = GradedIconState.Disabled;
+            }
+        }
+
+
+        private void Radio_SkippedSplit_UseDefault_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.SkippedSplitIcon.IconState = GradedIconState.Default;
+            }
+        }
+
+        private void Radio_SkippedSplit_Disable_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                this.SkippedSplitIcon.IconState = GradedIconState.Disabled;
+            }
         }
     }
 }

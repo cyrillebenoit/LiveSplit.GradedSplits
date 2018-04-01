@@ -164,7 +164,7 @@ namespace LiveSplit.UI.Components
                 }
             }
 
-            var iconsNotBlank = state.Run.Where(x => x.Icon != null).Count() > 0;
+            var iconsNotBlank = (state.Run.Where(x => x.Icon != null).Any() || Settings.GradedIconsApplicationState != GradedIconsApplicationState.Disabled);
             foreach (var split in SplitComponents)
             {
                 split.DisplayIcon = iconsNotBlank && Settings.DisplayIcons;
