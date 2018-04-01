@@ -10,6 +10,7 @@ General Settings:
 * Override current live run - Updates your split icons as you run (when you split, the icon is updated). Your current split icons remain until you split that segment.
 * Override personal best - Updates your split icons based on how well your personal best did against that segment's best time. Note that as you run more, and get better splits, your Personal Bests' become worse in comparision.
 * Override current live run AND personal best - Updates the split icons for your PB AND updates icons when you split.
+* Known issue - Comparing using Best Seg/On Ahead (Gaining), etc. does not play well with "Override personal best". For now, it's best to just stick to a % comparison if you want to have icons for your PB
 
 
 Split Settings:
