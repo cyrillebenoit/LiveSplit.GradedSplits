@@ -8,8 +8,9 @@ Requires LiveSplit 1.7.5.
 General Settings:
 * Don't override - Turns this feature on/off
 * Override current live run - Updates your split icons as you run (when you split, the icon is updated). Your current split icons remain until you split that segment.
-* Override current live run AND personal best - Updates the split icons for your personal best against that segment's best time. Also updates icons when you split.
-* Override personal best - Does the same as Override current live run AND personal best (Known issue)
+* Override personal best - Updates your split icons based on how well your personal best did against that segment's best time. Note that as you run more, and get better splits, your Personal Bests' become worse in comparision.
+* Override current live run AND personal best - Updates the split icons for your PB AND updates icons when you split.
+
 
 Split Settings:
 * Icon Image - Uses a local image file when overriding your normal split icon
