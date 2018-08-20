@@ -82,6 +82,7 @@ Recommended Settings:
 
 ## Thanks
 In no particular order:
+
 Chlorate - https://chlorate.ca/ - for putting in effort with ideas+testing+bug reporting, as well as making the icons, https://chlorate.ca/split-icons/
 
 protomagicalgirl - http://proto.ml - for putting in lots of effort ideas+testing+bug reporting, and advertising!
