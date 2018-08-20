@@ -80,3 +80,8 @@ Recommended Settings:
 9. Open up LiveSplit again. Your layout should have 2 sets of splits. 
 10. Remove the original split component from your splits.
 
+## Thanks
+In no particular order:
+Chlorate - https://chlorate.ca/ - for putting in effort with ideas+testing+bug reporting, as well as making the icons, https://chlorate.ca/split-icons/
+Protomagicalgirl - http://proto.ml - for putting in lots of effort ideas+testing+bug reporting, and advertising!
+
