@@ -338,19 +338,29 @@ namespace LiveSplit.UI.Components
                         }
                     }
 
-                    if (overrideAsSkippedPBSplit && this.Settings.SkippedSplitIcon.IconState == GradedIconState.Default)
+                    if (overrideAsSkippedPBSplit &&
+                        this.Settings.SkippedSplitIcon != null &&
+                        this.Settings.SkippedSplitIcon.IconState == GradedIconState.Default)
                     {
-                        // It was a skipped split
-                        Image cached;
-                        if (!GradedIcons.TryGetValue(this.Settings.SkippedSplitIcon.Base64Bytes + "_ss", out cached))
+                        if (string.IsNullOrWhiteSpace(this.Settings.SkippedSplitIcon.Base64Bytes))
                         {
-                            icon = getBitmapFromBase64(this.Settings.SkippedSplitIcon.Base64Bytes);
-                            GradedIcons.Add(this.Settings.SkippedSplitIcon.Base64Bytes + "_ss", icon);
+                            icon = null;
                         }
                         else
                         {
-                            icon = cached;
+                            // It was a skipped split
+                            Image cached;
+                            if (!GradedIcons.TryGetValue(this.Settings.SkippedSplitIcon.Base64Bytes + "_ss", out cached))
+                            {
+                                icon = getBitmapFromBase64(this.Settings.SkippedSplitIcon.Base64Bytes);
+                                GradedIcons.Add(this.Settings.SkippedSplitIcon.Base64Bytes + "_ss", icon);
+                            }
+                            else
+                            {
+                                icon = cached;
+                            }
                         }
+
                         customizedIcon = true;
                         return icon;
                     }

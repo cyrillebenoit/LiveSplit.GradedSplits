@@ -142,7 +142,6 @@
             this.Radio_BehindLosing_UsePercent = new System.Windows.Forms.RadioButton();
             this.Radio_BehindLosing_UseDefault = new System.Windows.Forms.RadioButton();
             this.Radio_BehindLosing_Disable = new System.Windows.Forms.RadioButton();
-            this.BehindLosing_Percent = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.trkSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dmnUpcomingSegments)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dmnTotalSegments)).BeginInit();
@@ -181,7 +180,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.BehindGaining_Percent)).BeginInit();
             this.tableLayoutPanel16.SuspendLayout();
             this.tableLayoutPanel17.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BehindLosing_Percent)).BeginInit();
             this.SuspendLayout();
             // 
             // chkDisplayRows
@@ -1760,7 +1758,6 @@
             this.tableLayoutPanel17.Controls.Add(this.Radio_BehindLosing_UsePercent, 2, 0);
             this.tableLayoutPanel17.Controls.Add(this.Radio_BehindLosing_UseDefault, 1, 0);
             this.tableLayoutPanel17.Controls.Add(this.Radio_BehindLosing_Disable, 0, 0);
-            this.tableLayoutPanel17.Controls.Add(this.BehindLosing_Percent, 3, 0);
             this.tableLayoutPanel17.Location = new System.Drawing.Point(34, 136);
             this.tableLayoutPanel17.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel17.Name = "tableLayoutPanel17";
@@ -1775,9 +1772,9 @@
             this.Radio_BehindLosing_UsePercent.AutoSize = true;
             this.Radio_BehindLosing_UsePercent.Location = new System.Drawing.Point(196, 8);
             this.Radio_BehindLosing_UsePercent.Name = "Radio_BehindLosing_UsePercent";
-            this.Radio_BehindLosing_UsePercent.Size = new System.Drawing.Size(124, 17);
+            this.Radio_BehindLosing_UsePercent.Size = new System.Drawing.Size(127, 17);
             this.Radio_BehindLosing_UsePercent.TabIndex = 0;
-            this.Radio_BehindLosing_UsePercent.Text = "Within % of Best Seg";
+            this.Radio_BehindLosing_UsePercent.Text = "Slower than all above";
             this.Radio_BehindLosing_UsePercent.UseVisualStyleBackColor = true;
             this.Radio_BehindLosing_UsePercent.CheckedChanged += new System.EventHandler(this.Radio_BehindLosing_UsePercent_CheckedChanged);
             // 
@@ -1806,31 +1803,6 @@
             this.Radio_BehindLosing_Disable.Text = "Disable";
             this.Radio_BehindLosing_Disable.UseVisualStyleBackColor = true;
             this.Radio_BehindLosing_Disable.CheckedChanged += new System.EventHandler(this.Radio_BehindLosing_Disable_CheckedChanged);
-            // 
-            // BehindLosing_Percent
-            // 
-            this.BehindLosing_Percent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.BehindLosing_Percent.DecimalPlaces = 3;
-            this.BehindLosing_Percent.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.BehindLosing_Percent.Location = new System.Drawing.Point(326, 7);
-            this.BehindLosing_Percent.Maximum = new decimal(new int[] {
-            99999,
-            0,
-            0,
-            0});
-            this.BehindLosing_Percent.Name = "BehindLosing_Percent";
-            this.BehindLosing_Percent.Size = new System.Drawing.Size(66, 20);
-            this.BehindLosing_Percent.TabIndex = 3;
-            this.BehindLosing_Percent.Value = new decimal(new int[] {
-            99999,
-            0,
-            0,
-            0});
-            this.BehindLosing_Percent.ValueChanged += new System.EventHandler(this.BehindLosing_Percent_ValueChanged);
             // 
             // GradedSplitsSettings
             // 
@@ -1895,7 +1867,6 @@
             this.tableLayoutPanel16.PerformLayout();
             this.tableLayoutPanel17.ResumeLayout(false);
             this.tableLayoutPanel17.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BehindLosing_Percent)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2016,6 +1987,5 @@
         private System.Windows.Forms.RadioButton Radio_BehindLosing_UsePercent;
         private System.Windows.Forms.RadioButton Radio_BehindLosing_UseDefault;
         private System.Windows.Forms.RadioButton Radio_BehindLosing_Disable;
-        private System.Windows.Forms.NumericUpDown BehindLosing_Percent;
     }
 }

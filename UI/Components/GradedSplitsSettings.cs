@@ -188,7 +188,7 @@ namespace LiveSplit.UI.Components
             this.AheadGainingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Base64Bytes = null };
             this.AheadLosingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Base64Bytes = null };
             this.BehindGainingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Base64Bytes = null };
-            this.BehindLosingTimeIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Base64Bytes = null };
+            this.BehindLosingTimeIcon = new GradedIcon { PercentageBehind = 999999999999, IconState = GradedIconState.Disabled, Base64Bytes = null };
             this.SkippedSplitIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Base64Bytes = null };
             this.GradedIconsApplicationState = GradedIconsApplicationState.Disabled;
         }
@@ -538,7 +538,8 @@ namespace LiveSplit.UI.Components
                 }
                 else if (child.Name == "BehindLosing")
                 {
-                    percentageToUpdate = BehindLosing_Percent;
+                    percentage = 999999999999;
+                    //percentageToUpdate = BehindLosing_Percent;
                     toPlaceIconOn = BehindLosingIconButton;
                     disabled = Radio_BehindLosing_Disable;
                     defaultRadio = Radio_BehindLosing_UseDefault;
@@ -722,7 +723,7 @@ namespace LiveSplit.UI.Components
                                             (this.Radio_BehindLosing_UseDefault.Checked ? GradedIconState.Default :
                                                 (this.Radio_BehindLosing_UsePercent.Checked ? GradedIconState.PercentageSplit : GradedIconState.Disabled)
                                             ));
-                hashCode ^= SettingsHelper.CreateSetting(document, behindLosingElem, "PercentBehind", this.BehindLosing_Percent.Value);
+                hashCode ^= SettingsHelper.CreateSetting(document, behindLosingElem, "PercentBehind", 999999999999);// this.BehindLosing_Percent.Value);
                 hashCode ^= SettingsHelper.CreateSetting(document, behindLosingElem, "Icon", this.BehindLosingTimeIcon.Base64Bytes);
                 hashCode ^= SettingsHelper.CreateSetting(document, behindLosingElem, "State", state.ToString());
                 gradedIconsElement.AppendChild(behindLosingElem);
@@ -1085,7 +1086,7 @@ namespace LiveSplit.UI.Components
 
         private void BehindLosing_Percent_ValueChanged(object sender, EventArgs e)
         {
-            this.BehindLosingTimeIcon.PercentageBehind = ((NumericUpDown)sender).Value;
+            //this.BehindLosingTimeIcon.PercentageBehind = ((NumericUpDown)sender).Value;
         }
 
 
