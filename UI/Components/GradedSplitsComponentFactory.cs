@@ -15,10 +15,10 @@ namespace LiveSplit.UI.Components
 
         public string UpdateName => ComponentName;
 
-        public string XMLURL => "http://livesplit.org/update/Components/update.LiveSplit.Splits.xml";
+        public string XMLURL => "";
 
-        public string UpdateURL => "http://livesplit.org/update/";
+        public string UpdateURL => "";
 
-        public Version Version => Version.Parse("1.8.10");
+        public Version Version => Version.Parse("1.8.11");
     }
 }

@@ -4,7 +4,7 @@ namespace LiveSplit.TimeFormatters
 {
     public class GradedDeltaSplitTimeFormatter : ITimeFormatter
     {
-        public LiveSplit.TimeFormatters.TimeAccuracy Accuracy { get; set; }
+        public TimeAccuracy Accuracy { get; set; }
         public bool DropDecimals { get; set; }
 
         public GradedDeltaSplitTimeFormatter(TimeAccuracy accuracy, bool dropDecimals)
