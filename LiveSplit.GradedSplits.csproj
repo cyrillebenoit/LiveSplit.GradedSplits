@@ -16,6 +16,8 @@
     <SccAuxPath>Svn</SccAuxPath>
     <SccProvider>SubversionScc</SccProvider>
     <TargetFrameworkProfile />
+    <LangVersion>7.1</LangVersion>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -101,17 +103,21 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LiveSplit\LiveSplit\LiveSplit.Core\LiveSplit.Core.csproj">
+    <ProjectReference Include="..\..\LiveSplit.Core\LiveSplit.Core.csproj">
       <Project>{6de847db-20a3-4848-aeee-1b4364aecdfb}</Project>
       <Name>LiveSplit.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LiveSplit\LiveSplit\LiveSplit\LiveSplit.csproj">
+    <ProjectReference Include="..\..\LiveSplit\LiveSplit.csproj">
       <Project>{e8047f95-ba79-4e2e-a9bb-5c48d5fa2467}</Project>
       <Name>LiveSplit</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LiveSplit\LiveSplit\UpdateManager\UpdateManager.csproj">
+    <ProjectReference Include="..\..\UpdateManager\UpdateManager.csproj">
       <Project>{56dea3a0-2eb7-493b-b50f-a5e3aa8ae52a}</Project>
       <Name>UpdateManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Cyrille\RiderProjects\LiveSplit\LiveSplit\LiveSplit.Core\LiveSplit.Core.csproj">
+      <Project>{6de847db-20a3-4848-aeee-1b4364aecdfb}</Project>
+      <Name>LiveSplit.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

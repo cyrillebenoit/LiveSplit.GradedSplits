@@ -279,10 +279,14 @@ namespace LiveSplit.UI.Components
             var icon = Split.Icon;
             customizedIcon = true;
 
-            if (this.Settings.DisplayIcons)
+            var comparison = Settings.Comparison == "Current Comparison" ? state.CurrentComparison : Settings.Comparison;
+            if (!state.Run.Comparisons.Contains(comparison))
+                comparison = state.CurrentComparison;
+
+            if (Settings.DisplayIcons)
             {
                 var attemptIconOverride = false;
-                var currentSegmantHasBeenSplit = (state.CurrentSplitIndex > splitIndex);
+                var currentSegmentHasBeenSplit = (state.CurrentSplitIndex > splitIndex);
                 var updateBasedOnCurrentRun = (this.Settings.GradedIconsApplicationState == GradedIconsApplicationState.ComparisonAndCurrentRun ||
                                                 this.Settings.GradedIconsApplicationState == GradedIconsApplicationState.CurrentRun);
 
@@ -293,7 +297,7 @@ namespace LiveSplit.UI.Components
                 {
                     attemptIconOverride = true;
                 }
-                else if (updateBasedOnCurrentRun && currentSegmantHasBeenSplit)
+                else if (updateBasedOnCurrentRun && currentSegmentHasBeenSplit)
                 {
                     attemptIconOverride = true;
                 }
@@ -304,41 +308,41 @@ namespace LiveSplit.UI.Components
                     var splitState = SplitState.Unknown;
                     var previousSegmentTime = LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, state.CurrentTimingMethod);
 
-                    var overrideAsSkippedPBSplit = false;
+                    var overrideAsSkippedPbSplit = false;
 
                     // Use the skipped split icon if they specified to override for the current run
                     // if the segment has been split (and skipped)
                     if (previousSegmentTime == null &&
-                            currentSegmantHasBeenSplit &&
+                            currentSegmentHasBeenSplit &&
                             updateBasedOnCurrentRun)
                     {
-                        overrideAsSkippedPBSplit = true;
+                        overrideAsSkippedPbSplit = true;
                     }
                     // Use the skipped split icon if they specified to override compared to the PB
                     else if (updateBasedOnComparison)
                     {
-                        // Don't override whatever's in PB if they've split this segment and specificed to update on teh current run
+                        // Don't override whatever's in PB if they've split this segment and specificed to update on the current run
                         // We don't want a skipped PB segment to cause a "return" later on here.
-                        if (!(currentSegmantHasBeenSplit && updateBasedOnCurrentRun))
+                        if (!(currentSegmentHasBeenSplit && updateBasedOnCurrentRun))
                         {
                             // the PB was a skipped split?
                             var PBSplit = state.Run[splitIndex];
                             if (PBSplit != null)
                             {
-                                var PBSplittime = PBSplit.PersonalBestSplitTime;
+                                var PBSplittime = PBSplit.Comparisons[comparison];
                                 if (state.CurrentTimingMethod == TimingMethod.GameTime)
                                 {
-                                    overrideAsSkippedPBSplit = (PBSplittime.GameTime == null);
+                                    overrideAsSkippedPbSplit = (PBSplittime.GameTime == null);
                                 }
                                 else if (state.CurrentTimingMethod == TimingMethod.RealTime)
                                 {
-                                    overrideAsSkippedPBSplit = (PBSplittime.RealTime == null);
+                                    overrideAsSkippedPbSplit = (PBSplittime.RealTime == null);
                                 }
                             }
                         }
                     }
 
-                    if (overrideAsSkippedPBSplit &&
+                    if (overrideAsSkippedPbSplit &&
                         this.Settings.SkippedSplitIcon != null &&
                         this.Settings.SkippedSplitIcon.IconState == GradedIconState.Default)
                     {
@@ -389,7 +393,7 @@ namespace LiveSplit.UI.Components
                         }
 
                         double currentMilliseconds = 0;
-                        if (currentSegmantHasBeenSplit && updateBasedOnCurrentRun)
+                        if (currentSegmentHasBeenSplit && updateBasedOnCurrentRun)
                         {
                             if (previousSegmentTime != null)
                             {
@@ -402,18 +406,18 @@ namespace LiveSplit.UI.Components
                             double priorsplitMilliseconds = 0;
                             if (state.CurrentTimingMethod == TimingMethod.GameTime)
                             {
-                                personalBestTimeMilliseconds = Split.PersonalBestSplitTime.GameTime?.TotalMilliseconds ?? 0;
+                                personalBestTimeMilliseconds = Split.Comparisons[comparison].GameTime?.TotalMilliseconds ?? 0;
                                 if (splitIndex > 0) // At index 0, there is no prior split, and the PB split IS the total ms for it
                                 {
-                                    priorsplitMilliseconds = state.Run[splitIndex - 1].PersonalBestSplitTime.GameTime?.TotalMilliseconds ?? 0;
+                                    priorsplitMilliseconds = state.Run[splitIndex - 1].Comparisons[comparison].GameTime?.TotalMilliseconds ?? 0;
                                 }
                             }
                             else if (state.CurrentTimingMethod == TimingMethod.RealTime)
                             {
-                                personalBestTimeMilliseconds = Split.PersonalBestSplitTime.RealTime?.TotalMilliseconds ?? 0;
+                                personalBestTimeMilliseconds = Split.Comparisons[comparison].RealTime?.TotalMilliseconds ?? 0;
                                 if (splitIndex > 0) // At index 0, there is no prior split, and the PB split IS the total ms for it
                                 {
-                                    priorsplitMilliseconds = state.Run[splitIndex - 1].PersonalBestSplitTime.RealTime?.TotalMilliseconds ?? 0;
+                                    priorsplitMilliseconds = state.Run[splitIndex - 1].Comparisons[comparison].RealTime?.TotalMilliseconds ?? 0;
                                 }
                             }
 

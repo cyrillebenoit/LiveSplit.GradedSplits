@@ -37,6 +37,7 @@
             this.chkLockLastSplit = new System.Windows.Forms.CheckBox();
             this.chkSeparatorLastSplit = new System.Windows.Forms.CheckBox();
             this.trkSize = new System.Windows.Forms.TrackBar();
+            this.CmbComparison = new System.Windows.Forms.ComboBox();
             this.lblSplitSize = new System.Windows.Forms.Label();
             this.chkLastSplit = new System.Windows.Forms.CheckBox();
             this.chkThinSeparators = new System.Windows.Forms.CheckBox();

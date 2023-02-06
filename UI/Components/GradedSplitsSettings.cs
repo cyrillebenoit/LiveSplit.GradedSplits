@@ -12,6 +12,7 @@ namespace LiveSplit.UI.Components
 {
     public partial class GradedSplitsSettings : UserControl
     {
+        private ComboBox CmbComparison { get; set; }
         private int _VisualSplitCount { get; set; }
         public int VisualSplitCount
         {
@@ -33,6 +34,7 @@ namespace LiveSplit.UI.Components
         public float ScaledSplitHeight { get { return SplitHeight * 10f; } set { SplitHeight = value / 10f; } }
         public float IconSize { get; set; }
 
+        public string Comparison { get; set; }
         public bool Display2Rows { get; set; }
 
         public Color BackgroundColor { get; set; }
@@ -122,6 +124,7 @@ namespace LiveSplit.UI.Components
             ShowBlankSplits = true;
             LockLastSplit = true;
             SeparatorLastSplit = true;
+            Comparison = "Current Comparison";
             SplitTimesAccuracy = TimeAccuracy.Seconds;
             CurrentSplitTopColor = Color.FromArgb(51, 115, 244);
             CurrentSplitBottomColor = Color.FromArgb(21, 53, 116);
@@ -191,8 +194,14 @@ namespace LiveSplit.UI.Components
             this.BehindLosingTimeIcon = new GradedIcon { PercentageBehind = 999999999999, IconState = GradedIconState.Disabled, Base64Bytes = null };
             this.SkippedSplitIcon = new GradedIcon { PercentageBehind = 0, IconState = GradedIconState.Disabled, Base64Bytes = null };
             this.GradedIconsApplicationState = GradedIconsApplicationState.Disabled;
+            
+            CmbComparison.SelectedIndexChanged += cmbComparison_SelectedIndexChanged;
+            CmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
         }
-
+        void cmbComparison_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Comparison = CmbComparison.SelectedItem.ToString();
+        }
         void chkColumnLabels_CheckedChanged(object sender, EventArgs e)
         {
             btnLabelColor.Enabled = lblLabelsColor.Enabled = chkColumnLabels.Checked;
@@ -311,6 +320,10 @@ namespace LiveSplit.UI.Components
         {
             ResetColumns();
 
+            CmbComparison.Items.Clear();
+            CmbComparison.Items.Add("Current Comparison");
+            CmbComparison.Items.AddRange(CurrentState.Run.Comparisons.ToArray());
+            //.Where(x => x != BestSplitTimesComparisonGenerator.ComparisonName && x != NoneComparisonGenerator.ComparisonName).ToArray()
             chkOverrideDeltaColor_CheckedChanged(null, null);
             chkOverrideTextColor_CheckedChanged(null, null);
             chkOverrideTimesColor_CheckedChanged(null, null);
